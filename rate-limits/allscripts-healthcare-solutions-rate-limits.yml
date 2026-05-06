@@ -4,84 +4,52 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Allscripts Healthcare Solutions
 providerId: allscripts-healthcare-solutions
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Healthcare IT
   - EHR
   - Clinical
+  - FHIR
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Allscripts Healthcare Solutions API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: Allscripts / Veradigm does not publish concrete public per-second or per-minute API rate
+  limits. Limits for Unity, FHIR, and Practice Fusion APIs are enforced per partner registration and per
+  FHIR-server tenant. Patient-facing FHIR endpoints follow ONC / Cures Act non-discrimination requirements
+  but are subject to operational throttling.
+sources:
+  - https://veradigm.com
+  - https://developer.veradigm.com
+notes: No public TPS/RPM numbers. Reconcile against partner-program registration and tenant-specific FHIR-server
+  limits.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  unauthorized: 401
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Allscripts Healthcare Solutions API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Allscripts Healthcare Solutions API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Allscripts Healthcare Solutions API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Allscripts Healthcare Solutions API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Allscripts Healthcare Solutions API
+  - name: Unity API Per-Partner Throughput
+    scope: partner
+    metric: varies
+    limit: per-partner-registration; not publicly documented
+  - name: FHIR API Tenant Throughput
+    scope: tenant
+    metric: varies
+    limit: per-tenant; not publicly documented but enforced by the FHIR server
+  - name: Practice Fusion API
+    scope: partner
+    metric: varies
+    limit: per-partner-registration; not publicly documented
 policies:
+  - name: SMART-on-FHIR Authorization
+    description: FHIR API access uses SMART-on-FHIR / OAuth 2.0 authorization with launch contexts; tokens
+      are scoped per app and per patient.
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: On 429 responses implement exponential backoff with jitter and honor Retry-After if returned.
+  - name: ONC Non-Discrimination
+    description: Patient-access FHIR endpoints must not discriminate against certified app developers per
+      21st Century Cures Act information-blocking rules; throttling must be reasonable and operationally
+      justified.
+  - name: Partner Registration
+    description: Partner-program registration governs production-tier rate-limit allowances and certification
+      status.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

@@ -4,144 +4,93 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Allscripts Healthcare Solutions
 providerId: allscripts-healthcare-solutions
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Healthcare IT
   - EHR
   - Clinical
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+  - FHIR
+  - Veradigm
+description: Allscripts (now Veradigm) provides EHR APIs for ambulatory and acute-care customers, including
+  Unity (proprietary) and FHIR R4 endpoints supporting USCDI / 21st Century Cures Act regulated data exchange.
+  Read-only FHIR access for patient/app developers can be free under regulatory requirements; commercial
+  Unity API access for Sunrise / TouchWorks / Practice Fusion integrations is gated behind Veradigm Developer
+  Program agreements with custom commercial terms.
+sources:
+  - https://veradigm.com
+  - https://developer.veradigm.com
+notes: Public price list is not published. Plans below are placeholder shells; replace with negotiated
+  Developer Program terms once contracted.
 plans:
-  - id: allscripts-healthcare-solutions-free
-    name: Free
+  - id: allscripts-healthcare-solutions-fhir-regulated
+    name: FHIR Regulated Access (USCDI / Cures Act)
     type: freemium
-    description: Free entry tier for the Allscripts Healthcare Solutions API surface. Intended for evaluation,
-      prototyping, and low-volume integrations. Real limits and pricing must be reconciled with the provider's
-      published plan documentation.
+    description: Free patient and app-developer access to FHIR R4 endpoints required by the 21st Century
+      Cures Act / USCDI regulations. Subject to registration and SMART-on-FHIR launch contexts.
     entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.allscripts.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.allscripts.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Allscripts Healthcare Solutions API
-  - id: allscripts-healthcare-solutions-pro
-    name: Professional
-    type: paid
-    description: Production tier for Allscripts Healthcare Solutions. Provides higher quotas, priority
-      support, and access to the broader API portfolio. Pricing placeholder; align with the provider's
-      pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.allscripts.com
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.allscripts.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
+      - label: FHIR R4 API Access
+        description: Regulated patient/app-developer FHIR API access
+        name: fhir_access
+        type: flat
+        metric: month
         limit: -1
         timeFrame: month
-        geo: global
-        domains:
-          - https://api.allscripts.com
-        unit: 1000
-        price: TBD
+        geo: US
+        unit: 1
+        price: '0.00'
         userMultiplied: false
     elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Allscripts Healthcare Solutions API
-  - id: allscripts-healthcare-solutions-enterprise
-    name: Enterprise
+      - name: FHIR R4 Patient Access
+      - name: SMART-on-FHIR App Launch
+      - name: USCDI Data Classes
+  - id: allscripts-healthcare-solutions-developer-program
+    name: Veradigm Developer Program
     type: enterprise
-    description: Custom-negotiated tier for Allscripts Healthcare Solutions. Includes dedicated capacity,
-      contractual SLAs, security review, data residency options, and named technical account management.
+    description: Commercial integration program for ISVs / partners building on Sunrise, TouchWorks, Professional,
+      and Practice Fusion. Custom commercial terms covering Unity API and embedded analytics.
     entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
+      - label: Developer Program Subscription
+        description: Annual program subscription with negotiated API access scope
+        name: developer_program
+        type: subscription
+        metric: contract
         limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://api.allscripts.com
+        timeFrame: year
+        geo: US
         unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://api.allscripts.com
-        unit: 1
-        price: custom
+        price: contact sales
         userMultiplied: false
     elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Allscripts Healthcare Solutions API
+      - name: Unity API Access
+      - name: Veradigm FHIR API Access
+      - name: Practice Fusion API Access
+      - name: Partner Account Management
+      - name: Sandbox Access
+      - name: Certification Program
+  - id: allscripts-healthcare-solutions-enterprise
+    name: Enterprise / Health-System Customer
+    type: enterprise
+    description: Direct customer engagement for health-system EHR licensing including bundled API access
+      across the Veradigm portfolio.
+    entries:
+      - label: Enterprise Subscription
+        description: Custom-quoted health-system EHR contract
+        name: enterprise_subscription
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: year
+        geo: US
+        unit: 1
+        price: contact sales
+        userMultiplied: false
+    elements:
+      - name: Sunrise EHR
+      - name: TouchWorks EHR
+      - name: Practice Fusion
+      - name: Embedded Analytics
+      - name: Premium Support
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

@@ -1,5 +1,6 @@
 specification: FinOps Framework
 specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -8,124 +9,84 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: Allscripts Healthcare Solutions
 providerId: allscripts-healthcare-solutions
-publisherName: Allscripts Healthcare Solutions
-serviceCategory: API
+publisherName: Veradigm Inc.
+serviceCategory: Electronic Health Records
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Healthcare IT
   - EHR
   - Clinical
+  - FHIR
+  - Veradigm
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the Allscripts Healthcare Solutions API surface. Provides
-  a FOCUS-aligned mapping for cost allocation, usage measurement, and unit-economics reporting across
-  the provider's APIs.
-principles:
-  - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
-  - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
-  - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
-  - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
-domains:
-  - name: Understand Usage and Cost
-    capabilities:
-      - Data Ingestion
-      - Allocation
-      - Reporting and Analytics
-      - Anomaly Management
-  - name: Quantify Business Value
-    capabilities:
-      - Planning and Estimating
-      - Forecasting
-      - Budgeting
-      - Benchmarking
-      - Unit Economics
-  - name: Optimize Usage and Cost
-    capabilities:
-      - Architecting for Cloud
-      - Rate Optimization
-      - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
-  - name: Manage the FinOps Practice
-    capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
-      - Invoicing and Chargeback
-      - Onboarding Workloads
-      - Intersecting Disciplines
+description: 'FOCUS-aligned FinOps shell for Allscripts / Veradigm: regulated FHIR API access is free per
+  ONC / Cures Act mandate; commercial Unity API and Veradigm Developer Program access is contract-based
+  with custom terms. Reconcile meter rates against the negotiated developer-program or health-system contract.'
+sources:
+  - https://veradigm.com
+  - https://developer.veradigm.com
+  - https://focus.finops.org/focus-specification/v1-3/
 billingModel:
-  pricingCategory: Usage-Based
-  billingFrequency: Monthly
+  pricingCategory: Subscription
+  billingFrequency: Annual
   billingCurrency: USD
   chargeCategories:
-    - Usage
     - Purchase
     - Tax
-    - Credit
     - Adjustment
-  chargeFrequency: Recurring
 focusColumns:
-  ServiceName: Allscripts Healthcare Solutions
-  ServiceCategory: Developer Tools / API
-  ProviderName: Allscripts Healthcare Solutions
-  PublisherName: Allscripts Healthcare Solutions
-  InvoiceIssuerName: Allscripts Healthcare Solutions
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceName: Allscripts / Veradigm Healthcare APIs
+  ServiceCategory: Electronic Health Records
+  ProviderName: Veradigm
+  PublisherName: Veradigm Inc.
+  InvoiceIssuerName: Veradigm Inc.
   BillingCurrency: USD
-  ChargeCategory: Usage
+  ChargeCategory: Purchase
 meters:
-  - name: api_requests
-    description: Count of billable API requests
+  - name: developer_program_subscription
+    description: Annual partner / developer-program subscription
+    unit: contract-year
+    aggregation: sum
+    dimensions:
+      - product
+      - tier
+  - name: ehr_subscription
+    description: Annual health-system EHR subscription bundling API access
+    unit: contract-year
+    aggregation: sum
+    dimensions:
+      - product
+      - facility
+  - name: api_calls
+    description: API call volume (where contractually metered for high-volume integrations)
     unit: request
     aggregation: sum
     dimensions:
       - api
-      - endpoint
-      - tier
-      - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+      - tenant
+  - name: fhir_calls
+    description: Regulated FHIR API call volume (no charge under ONC mandate)
+    unit: request
     aggregation: sum
     dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
-    dimensions:
-      - api
-      - endpoint
-      - tier
-apis:
-  - name: Allscripts Healthcare Solutions API
-    baseURL: https://api.allscripts.com
-    tags:
-      - Healthcare IT
-      - EHR
-      - Clinical
-    serviceName: Allscripts Healthcare Solutions API
-    serviceCategory: API
-unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
-    target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
-    target: TBD
+      - resource
+      - tenant
+principles:
+  - name: Visibility
+    description: Track Veradigm partner/program invoices and tenant utilization through Veradigm customer
+      portals; correlate API usage to specific clinical workflows.
+  - name: Allocation
+    description: Allocate Veradigm spend to clinical product lines (ambulatory / acute / patient engagement)
+      and to ISV-partner integrations.
+  - name: Optimization
+    description: Consolidate redundant ISV integrations during contract renewals; align Unity vs FHIR usage
+      to lowest-cost path; lean on regulated free FHIR access where feature parity exists.
+  - name: Accountability
+    description: Owned by health-system CIO / IT or the ISV's product owner; reviewed against clinical
+      KPIs (note completion time, claims throughput, patient access).
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
