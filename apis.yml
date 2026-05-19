@@ -28,6 +28,10 @@ apis:
     description: >-
       The Allscripts Healthcare Solutions API provides access to platform services and data for enterprise integration and automation.
 common:
+  - type: GitHubOrganization
+    url: https://github.com/allscriptshealthcare
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/allscripts
   - type: Website
     url: https://www.allscripts.com
 maintainers:
