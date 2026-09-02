@@ -1,0 +1,244 @@
+generated: '2026-09-01'
+method: probed
+source: >-
+  Live GET probes of the named /.well-known/ path list against every host named in
+  apis.yml and in the Veradigm developer portal (developer.veradigm.com), run
+  2026-09-01. Allscripts Healthcare Solutions renamed itself Veradigm in 2022;
+  allscripts.com 301s to veradigm.com, and the FHIR estate is still served from
+  *.open.allscripts.com, so both domains are in scope and both belong to this company.
+description: >-
+  Two real discovery documents were found, both on the Veradigm FHIR estate at
+  *.fhirpoint.open.allscripts.com: a SMART App Launch configuration on the published
+  Veradigm EHR R4 sandbox base, and a full OpenID Connect discovery document on the
+  authorization server that sandbox names as its issuer. Everything else missed. Two
+  hosts answer a catch-all 200 with an HTML shell for every path including a random
+  control path, and one host is behind a bot challenge; neither is a served
+  /.well-known/ surface and neither earns a pointer.
+hit_count: 2
+path_echo_control: mixed          # see per-host soft_404_control below
+hosts:
+  - host: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101
+    note: >-
+      Published Veradigm EHR R4 sandbox base URL (developer.veradigm.com/Fhir/FHIR_Sandboxes).
+      The host throttles aggressively - the smart-configuration below was fetched on a serial
+      probe at 200/9183 bytes and saved; a later re-probe of the same path and of four sibling
+      paths returned no response at all (curl exit 28, connection timed out), so those rows are
+      recorded honestly as no-response rather than as a 404.
+    soft_404_control: passed      # host root answers 404 for the random control path
+    documents:
+      - path: /.well-known/smart-configuration
+        status: 200
+        file: allscripts-healthcare-solutions-smart-configuration.json
+      - path: /.well-known/openid-configuration
+        status: 0
+        note: no response (connection timed out) - host throttled the follow-up probe
+      - path: /.well-known/oauth-authorization-server
+        status: 0
+        note: no response (connection timed out)
+      - path: /.well-known/agent-card.json
+        status: 0
+        note: no response (connection timed out)
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 0
+        note: negative control - no response (connection timed out)
+  - host: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization
+    note: >-
+      The issuer the sandbox smart-configuration names. Negative control returned 404, so the
+      openid-configuration hit below is a real served document, not a path echo.
+    soft_404_control: passed
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: allscripts-healthcare-solutions-openid-configuration.json
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/smart-configuration
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 404
+  - host: https://fhir.fhirpoint.open.allscripts.com
+    soft_404_control: passed
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/api-catalog.json
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/ucp.json
+        status: 404
+      - path: /.well-known/acp.json
+        status: 404
+      - path: /.well-known/aauth-resource.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/smart-configuration
+        status: 404
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 404
+  - host: https://fhirecho.fhirpoint.open.allscripts.com
+    soft_404_control: passed
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/api-catalog.json
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/ucp.json
+        status: 404
+      - path: /.well-known/acp.json
+        status: 404
+      - path: /.well-known/aauth-resource.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/smart-configuration
+        status: 404
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 404
+  - host: https://developer.veradigm.com
+    note: >-
+      CATCH-ALL. Every path below, including the random negative control that cannot exist,
+      returned HTTP 200 with the identical 6,650-byte HTML shell of the portal home page.
+      Nothing was saved and no pointer is emitted from this host - a 200 here is a soft 404,
+      not a document.
+    soft_404_control: failed
+    soft_404_control_bytes: 6650
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/openid-configuration
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/api-catalog
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/api-catalog.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/ucp.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/acp.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/aauth-resource.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/agent.json
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/smart-configuration
+        status: 200
+        note: HTML shell, not a document
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 200
+        note: negative control returned the same 200 HTML shell - control FAILED
+  - host: https://veradigm.com
+    note: >-
+      Bot challenge. Every path returned HTTP 403 with an identical 228,393-byte HTML
+      challenge page, including the negative control. This is an edge policy, not a
+      statement about what the host serves; nothing could be read.
+    soft_404_control: inconclusive
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/api-catalog.json
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/ucp.json
+        status: 403
+      - path: /.well-known/acp.json
+        status: 403
+      - path: /.well-known/aauth-resource.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+      - path: /.well-known/smart-configuration
+        status: 403
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 403
+  - host: https://www.allscripts.com
+    note: >-
+      Legacy corporate host. Every path 301s; www.allscripts.com now redirects to
+      https://veradigm.com/?modal=allscripts. No documents are served from this domain.
+    soft_404_control: inconclusive
+    documents:
+      - path: /.well-known/security.txt
+        status: 301
+      - path: /.well-known/openid-configuration
+        status: 301
+      - path: /.well-known/oauth-authorization-server
+        status: 301
+      - path: /.well-known/oauth-protected-resource
+        status: 301
+      - path: /.well-known/api-catalog
+        status: 301
+      - path: /.well-known/api-catalog.json
+        status: 301
+      - path: /.well-known/ai-plugin.json
+        status: 301
+      - path: /.well-known/ucp.json
+        status: 301
+      - path: /.well-known/acp.json
+        status: 301
+      - path: /.well-known/aauth-resource.json
+        status: 301
+      - path: /.well-known/agent-card.json
+        status: 301
+      - path: /.well-known/agent.json
+        status: 301
+      - path: /.well-known/smart-configuration
+        status: 301
+      - path: /.well-known/allscripts-healthcare-solutions-negative-control-7f3ab91c.json
+        status: 301

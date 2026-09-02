@@ -1,0 +1,154 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  https://developer.veradigm.com/Fhir/Introduction, https://developer.veradigm.com/Fhir/Searching,
+  https://developer.veradigm.com/Fhir/BulkData, https://developer.veradigm.com/Fhir/EndpointDirectory,
+  plus derivation from fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json,
+  well-known/allscripts-healthcare-solutions-smart-configuration.json and
+  well-known/allscripts-healthcare-solutions-openid-configuration.json.
+description: >-
+  Which industry and cross-cutting standards the Veradigm (formerly Allscripts Healthcare Solutions)
+  API estate conforms to. Every "true" below is anchored either in a live provider-served machine-readable
+  document or in the provider's own developer documentation - none is inferred from marketing copy.
+  The domain standard for this market is HL7 FHIR, and Veradigm declares it in the contract itself:
+  the CapabilityStatement returned by GET [base]/metadata carries fhirVersion 4.0.1, format
+  application/fhir+json, and a rest.security service coding of SMART-on-FHIR.
+domain_standard:
+  id: hl7-fhir-r4
+  market: US ambulatory and acute EHR / clinical data exchange
+  declared_in_contract: true
+  evidence: >-
+    fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json - resourceType
+    CapabilityStatement, fhirVersion "4.0.1", software {name "Veradigm FHIR", version "4.22.0.1",
+    releaseDate "2026-05-07"}, publisher "Veradigm", 31 resource types declared with per-resource
+    interaction and searchParam lists. Fetched live and unauthenticated at
+    https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/metadata (HTTP 200).
+standards:
+  - id: hl7-fhir-r4
+    conforms: true
+    evidence: >-
+      CapabilityStatement declares fhirVersion 4.0.1 and format ["json","xml"]; the Introduction page
+      states "The current version of the Veradigm implementation of the FHIR API supports FHIR release
+      4 ('R4')".
+  - id: hl7-fhir-dstu2
+    conforms: true
+    deprecated: true
+    evidence: >-
+      The Endpoint Directory lists a separate DSTU2 endpoint table and a "Versionless" badge for
+      endpoints running both versions. Introduction page: "as of 6/1/2025, Veradigm will no longer be
+      providing support for DSTU2 as it approaches deprecation. The API is not turned off, but there is
+      no longer be technical support or resolution provided for any issues that arise."
+  - id: uscdi
+    conforms: true
+    evidence: >-
+      Introduction page: the implementation "supports FHIR release 4 ('R4') and the United States Core
+      Data for Interoperability ('USCDI') guidelines and requirements for data sharing."
+  - id: us-core
+    conforms: true
+    evidence: >-
+      The SMART configuration advertises US Core category-filtered v2 scopes verbatim, e.g.
+      patient/Condition.rs?category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern
+      and patient/Observation.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh.
+    note: >-
+      The CapabilityStatement does not name a US Core profile on any resource (every resource.profile is
+      empty) and does not populate instantiates, so the specific US Core IG version cannot be read from
+      the contract. Recorded as conforming on the scope evidence, with that gap stated.
+  - id: smart-app-launch
+    conforms: true
+    version: '2.0.0'
+    evidence: >-
+      Introduction page: "The Veradigm FHIR API supports the HL7 SMART Application Launch Framework
+      Implementation Guide Release 2.0.0 implementation specification, a profile of the OAuth 2.0
+      specification." The live /.well-known/smart-configuration advertises launch-ehr, launch-standalone,
+      context-ehr-patient, context-ehr-encounter, context-standalone-patient, sso-openid-connect,
+      permission-v1, permission-v2, authorize-post, client-public, client-confidential-symmetric and
+      client-confidential-asymmetric.
+  - id: smart-backend-services
+    conforms: true
+    evidence: >-
+      grant_types_supported includes client_credentials; the Bulk Data page requires App Type "System"
+      and a registered JWKS URL for backend authentication before an application may request bulk data.
+  - id: fhir-bulk-data-access
+    conforms: true
+    evidence: >-
+      The Bulk Data page documents the standard kickoff/poll/download flow verbatim - [FHIR path]/Group/{id}/$export,
+      202 Accepted with a Content-Location header, X-Progress and Retry-After while in progress, an NDJSON
+      output manifest with output[] and error[] arrays, and DELETE on the Content-Location URL to cancel.
+    note: >-
+      The CapabilityStatement itself declares no rest.operation entries and does not instantiate the
+      bulk-data CapabilityStatement, so $export is documented but not advertised in the contract.
+  - id: oauth2
+    conforms: true
+    evidence: grant_types_supported = ["authorization_code","client_credentials","refresh_token"].
+  - id: oauth2-pkce
+    conforms: true
+    evidence: code_challenge_methods_supported = ["S256"] in the SMART configuration; ["plain","S256"] in the OIDC discovery document.
+  - id: oidc
+    conforms: true
+    evidence: >-
+      A full OpenID Connect discovery document is served at
+      https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/.well-known/openid-configuration
+      (HTTP 200, application/json). Introduction page: "the Veradigm FHIR API supports OpenID Connect Core 1.0."
+  - id: rfc7517-jwks
+    conforms: true
+    evidence: >-
+      jwks_uri published in both discovery documents; the developer additionally registers their OWN
+      JWKS URL on the FHIR App page so they can rotate keys without contacting Veradigm.
+  - id: rfc8414-oauth-authorization-server-metadata
+    conforms: false
+    evidence: /.well-known/oauth-authorization-server returned 404 on the issuer host; discovery is via OIDC and SMART documents only.
+  - id: rfc9728-oauth-protected-resource
+    conforms: false
+    evidence: /.well-known/oauth-protected-resource returned 404 on every probed host.
+  - id: rfc8705-mtls-client-auth
+    conforms: true
+    evidence: >-
+      token_endpoint_auth_methods_supported includes tls_client_auth and self_signed_tls_client_auth;
+      the discovery document publishes mtls_endpoint_aliases and tls_client_certificate_bound_access_tokens.
+  - id: rfc9126-pushed-authorization-requests
+    conforms: true
+    evidence: pushed_authorization_request_endpoint is published in the OIDC discovery document.
+  - id: oauth-dpop
+    conforms: true
+    evidence: dpop_signing_alg_values_supported is published in the OIDC discovery document.
+  - id: hl7-fhir-operationoutcome
+    conforms: true
+    evidence: >-
+      Bulk Data page - a failed export returns "an OperationOutcome resource, which includes the severity,
+      code, and description of the error"; error output files are NDJSON of type OperationOutcome.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      No application/problem+json anywhere. FHIR uses its own OperationOutcome error envelope, which is
+      the correct convention for this domain.
+  - id: 21st-century-cures-act-information-blocking
+    conforms: true
+    evidence: >-
+      Endpoint Directory page - "Only endpoints that are designated for production environments are listed
+      in the Veradigm Endpoint Directory", published together with downloadable FHIR Bundle (NDJSON) and CSV
+      exports of the organization/endpoint list, which is the ONC certification requirement for patient access.
+  - id: ndjson
+    conforms: true
+    evidence: Endpoint Directory bundle download and every Bulk Data output file are NDJSON.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returned 404 or a soft-200 HTML shell on every probed host.
+  - id: fapi
+    conforms: false
+  - id: scim
+    conforms: false
+  - id: odata
+    conforms: false
+  - id: x12
+    conforms: unknown
+    evidence: >-
+      Veradigm operates payer/revenue-cycle products where X12 EDI is the norm, but nothing in the public
+      developer surface documents an X12 interface, so this is recorded as unknown rather than asserted.
+notes: >-
+  Compliance certifications (SOC 2, ISO 27001, HITRUST, HIPAA attestations) could NOT be verified.
+  veradigm.com returns HTTP 403 with a 228KB bot-challenge page for every path including /security/,
+  and trust.veradigm.com does not resolve, so no certification page could be read and no Compliance or
+  TrustCenter pointer is emitted. Veradigm's own developer portal does publish a Security Questionnaire
+  and a FHIR API Assessment as part of its certification programme
+  (https://developer.veradigm.com/Fhir/AdditionalInformation), but those are documents a partner
+  completes, not certifications Veradigm publishes about itself.

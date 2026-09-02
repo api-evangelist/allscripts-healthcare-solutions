@@ -1,0 +1,185 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  https://developer.veradigm.com/Fhir/Introduction, https://developer.veradigm.com/Fhir/Searching,
+  https://developer.veradigm.com/Fhir/BulkData, https://developer.veradigm.com/Fhir/EndpointDirectory,
+  https://developer.veradigm.com/Fhir/ProcessOverview, plus
+  fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json.
+description: >-
+  Cross-cutting request/response semantics of the Veradigm (formerly Allscripts Healthcare Solutions)
+  FHIR API - the rules an agent has to follow that are not visible in any single operation. Veradigm
+  publishes no OpenAPI, so these are read from its developer documentation and from the live
+  CapabilityStatement rather than derived from a spec.
+authentication:
+  style: OAuth 2.0 bearer token, SMART App Launch 2.0.0
+  discovery: >-
+    GET [FHIR base]/metadata returns the CapabilityStatement, whose rest.security carries the SMART
+    oauth-uris extension with authorize, token and manage URIs for THAT client environment. There is no
+    single global authorization server - every customer organization has its own endpoints, listed in the
+    Veradigm Endpoint Directory.
+  detail: authentication/allscripts-healthcare-solutions-authentication.yml
+  scopes: scopes/allscripts-healthcare-solutions-scopes.yml
+base_url_selection:
+  rule: >-
+    The base URL is per customer organization, not per vendor. Endpoints ending /fhir are for
+    PROVIDER-facing applications; endpoints ending /open are for PATIENT-facing applications; endpoints
+    badged "Versionless" serve both DSTU2 and R4 on the same URL. Choosing the wrong one is a 404, not a
+    403.
+  directory: https://developer.veradigm.com/Fhir/EndpointDirectory
+  machine_readable: >-
+    The directory can be downloaded as a FHIR Bundle in NDJSON (one Organization resource per client, with
+    identifiers and endpoints) or as CSV. This is the closest thing Veradigm publishes to a machine-readable
+    service catalog.
+content_negotiation:
+  formats: [application/fhir+json, application/fhir+xml]
+  default: JSON
+  version_selection: >-
+    On a "Versionless" endpoint the FHIR release is chosen with a parameter on the Accept header -
+    "Accept: application/fhir+json; fhirVersion=4.0" for R4 and "; fhirVersion=2.0" for DSTU2. With no
+    supported Accept header the server falls back to the default version configured at install time, which
+    is only discoverable by reading fhirVersion out of the CapabilityStatement. An agent that omits the
+    header cannot know which FHIR version it is talking to.
+pagination:
+  style: FHIR Bundle paging (link relations)
+  params:
+    - name: _count
+      description: Maximum number of resources per page.
+    - name: _lastUpdated
+      description: Server-side change filter - the practical way to page a changing dataset.
+  rule: >-
+    When a paged search uses _include, every _include resource related to the primary resources on a page
+    is repeated on that page even if it already appeared on an earlier page, so that neither side has to
+    cache across pages. An agent must de-duplicate by resource id rather than assume each included resource
+    appears once.
+  source: https://developer.veradigm.com/Fhir/Searching
+search:
+  common_params: [_id, _lastUpdated, _count, _include, _revinclude, _summary]
+  date_operators: [eq, gt, ge, lt, le]
+  date_formats: [YYYY, YYYY-MM, YYYY-MM-DD, 'yyyy-mm-ddThh:mm:ss[Z|(+|-)hh:mm]']
+  rule: >-
+    Omitting a comparison operator on a date search means EXACT MATCH, not "on or after". Ranges are
+    expressed by repeating the parameter, e.g. ?date=ge2022-01-01&date=le2022-01-31.
+  constraint: >-
+    _include and _revinclude currently work only in conjunction with the Provenance resource. Provenance
+    itself supports read-by-id but not search.
+  per_resource_params: >-
+    Each resource declares its own searchParam list in the CapabilityStatement - between 0 (Medication) and
+    11 (Location, Practitioner) parameters per resource. Read them from the contract rather than assuming
+    the US Core set.
+field_expansion:
+  supported: true
+  mechanism: _include / _revinclude (Provenance only today), and _summary to return a subset of a resource.
+metadata:
+  supported: false
+  note: FHIR has no free-form metadata/annotation field on these resources; Veradigm adds none.
+request_tracing:
+  header: null
+  note: >-
+    No request-id or correlation header is documented. The only correlation surface is the
+    Content-Location URL returned by a bulk export kickoff, which identifies that job for its lifetime.
+versioning:
+  scheme: FHIR release, negotiated on the Accept header (not in the URL path)
+  current: R4 (4.0.1)
+  legacy: DSTU2 - still served, unsupported since 2025-06-01
+  server_version: Veradigm FHIR 4.22.0.1, releaseDate 2026-05-07 (from the live CapabilityStatement)
+  detail: lifecycle/allscripts-healthcare-solutions-lifecycle.yml
+error_envelope:
+  shape: HL7 FHIR OperationOutcome (severity, code, description)
+  not: RFC 9457 application/problem+json
+  detail: errors/allscripts-healthcare-solutions-problem-types.yml
+rate_limit_signaling:
+  published_numbers: false
+  headers:
+    - name: Retry-After
+      where: Bulk data export status responses, in seconds.
+      on_violation: Polling before Retry-After elapses returns HTTP 429 Too Many Requests.
+    - name: X-Progress
+      where: Bulk data export status responses - percentage complete while the job runs.
+    - name: Expires
+      where: Bulk data export completion response - when the output files stop being downloadable.
+  note: >-
+    No X-RateLimit-* or RateLimit-* headers are documented, and Veradigm publishes no requests-per-second
+    figure. Retry-After on the bulk polling loop is the only runtime throttling signal an agent gets.
+  detail: rate-limits/allscripts-healthcare-solutions-rate-limits.yml
+idempotency:
+  supported: not-documented
+  header: null
+  note: >-
+    Veradigm documents no idempotency key of any kind. Twelve of the 31 declared resources accept create
+    and update, and FHIR update (PUT to a known id) is idempotent by REST semantics, but FHIR create (POST)
+    is not, and there is no published retry-safety contract for it. An agent retrying a failed create can
+    duplicate a clinical record. NO Idempotency pointer is emitted for this provider - the surface is real
+    but the contract is absent.
+async_operations:
+  present: true
+  pattern: >-
+    FHIR Bulk Data. POST [base]/Group/{id}/$export returns 202 Accepted with a Content-Location status URL
+    and no body; poll that URL; on completion it returns a manifest of NDJSON file URLs plus an error[]
+    array of OperationOutcome files. Only App Type "System" applications may use it.
+  supported_resources: 25
+  source: https://developer.veradigm.com/Fhir/BulkData
+dry_run_mode:
+  supported: false
+  note: No test/preview mode is documented for any write. The separation is environment-level - see sandbox/.
+reversibility:
+  grade: documented
+  rationale: >-
+    Exactly one reversal path is published, and the documentation does not state a window for it. Under the
+    0.12.0 rubric a reversal path with no stated window grades "documented", not "verified". No window is
+    asserted here that Veradigm does not itself state.
+  surfaces:
+    - operation: Cancel a bulk data export request
+      method: DELETE
+      path: '[Content Location URL]'
+      reverses: 'POST [base]/Group/{id}/$export'
+      window: not-stated
+      window_note: >-
+        Veradigm says only "The application can delete an export request if it was created in error or is
+        no longer needed" - no deadline is published. Separately, completed output files carry an Expires
+        header and "once they expire, they are no longer available", but the expiry value is per-response
+        and no duration is documented.
+      docs: https://developer.veradigm.com/Fhir/BulkData
+    - operation: Clinical writes (create / update)
+      resources:
+        - AllergyIntolerance
+        - Condition
+        - DocumentReference
+        - Immunization
+        - MedicationAdministration
+        - MedicationDispense
+        - MedicationRequest
+        - MedicationStatement
+        - Observation
+        - Questionnaire
+        - QuestionnaireResponse
+        - ServiceRequest
+      reversal: none-published
+      window: not-applicable
+      note: >-
+        The CapabilityStatement declares create and update on these twelve resources and delete on NONE
+        of them. There is no documented undo, void, retract or amend path for a clinical write made through
+        this API - a correction has to be made as a further update, and the prior state is only recoverable
+        through the Provenance resource. An agent must treat every write here as effectively permanent.
+      source: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+    - operation: OAuth token revocation
+      method: POST
+      path: /pro/authorization/connect/revocation
+      reverses: An issued access or refresh token.
+      window: any time before natural expiry
+      docs: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/.well-known/openid-configuration
+      note: Read from the revocation_endpoint published in the OIDC discovery document.
+data_handling:
+  redaction: >-
+    A 200 response may carry elements marked "redacted" where the Veradigm Clinical Authorization Service
+    decides the requester may not see the value but that its existence is clinically relevant. Redacted is
+    NOT the same as absent and must not be normalised to null.
+  provenance: >-
+    Provenance is included by default in a bulk export that names no specific resource type; if Provenance
+    is named explicitly then every other requested resource also carries provenance; if it is not named,
+    none do.
+cross_links:
+  errors: errors/allscripts-healthcare-solutions-problem-types.yml
+  lifecycle: lifecycle/allscripts-healthcare-solutions-lifecycle.yml
+  authentication: authentication/allscripts-healthcare-solutions-authentication.yml
+  rate_limits: rate-limits/allscripts-healthcare-solutions-rate-limits.yml
+  sandbox: sandbox/allscripts-healthcare-solutions-sandbox.yml

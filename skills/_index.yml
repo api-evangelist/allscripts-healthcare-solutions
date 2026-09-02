@@ -1,0 +1,38 @@
+generated: '2026-09-01'
+method: generated
+source: >-
+  Authored from fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json and the
+  Veradigm Connect developer documentation at developer.veradigm.com. Every FHIR resource, interaction and
+  search parameter referenced in these skills is declared in that CapabilityStatement; every portal step is
+  quoted from Veradigm's own Process Overview. Veradigm publishes no skills, AGENTS.md or agent guidance of
+  its own - a search of the developer portal on 2026-09-01 found none.
+description: >-
+  Packaged operating instructions for the three flows that matter on the Veradigm (formerly Allscripts)
+  FHIR estate: reading a patient record, exporting a population, and getting an application registered and
+  promoted to production. There is no OpenAPI to ground operationIds in, so operations are named as FHIR
+  resource + interaction exactly as the CapabilityStatement declares them.
+skills:
+  - file: allscripts-healthcare-solutions-patient-record-read.md
+    name: Read a patient's clinical record from Veradigm FHIR
+    api: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+    operations:
+      - Patient.read
+      - Patient.search-type
+      - Condition.search-type
+      - Observation.search-type
+      - MedicationRequest.search-type
+      - AllergyIntolerance.search-type
+      - Immunization.search-type
+      - DocumentReference.search-type
+  - file: allscripts-healthcare-solutions-bulk-export.md
+    name: Export a population with Veradigm FHIR Bulk Data
+    api: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+    operations:
+      - Group.read
+      - Group.search-type
+      - '$export'
+  - file: allscripts-healthcare-solutions-app-registration.md
+    name: Register and promote a Veradigm FHIR application
+    api: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+    operations:
+      - metadata

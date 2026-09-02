@@ -1,0 +1,97 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  https://developer.veradigm.com/Fhir/FHIR_Sandboxes and
+  https://developer.veradigm.com/Fhir/ProcessOverview
+description: >-
+  Veradigm (formerly Allscripts Healthcare Solutions) publishes FHIR Partner Testing Environments with
+  real, openly-reachable base URLs. Everything below is quoted from the provider's own pages - no test
+  value has been invented. The important asymmetry: the base URLs are public and one of them answers an
+  unauthenticated GET /metadata, but the CREDENTIALS are not self-service; provider and patient test
+  logins are issued by Veradigm on request.
+separation_model:
+  style: separate-environment
+  note: >-
+    There are no test/live key prefixes. Veradigm separates test from production by environment and by
+    licensing state - the docs say explicitly "There is no need to indicate if this is a test or
+    production application under Licensing Information", and an application moves to production by
+    clicking Request Production Access on the FHIR App page and passing Veradigm review.
+environments:
+  - name: Veradigm EHR - R4, EHR User/Provider and System access
+    base_url: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/
+    capability_statement: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/metadata
+    audience: [provider, system]
+    verified: '2026-09-01'
+    verification: >-
+      GET /metadata returned HTTP 200 with a 56KB FHIR R4 CapabilityStatement, unauthenticated. That
+      document is saved verbatim at
+      fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json and is the machine-readable
+      contract for this provider.
+    smart_configuration: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/.well-known/smart-configuration
+    note: >-
+      The host throttles - repeat probes shortly after a success returned no response at all. Back off
+      between calls.
+  - name: TouchWorks EHR - R4 provider endpoint
+    base_url: https://tw-fhir-r4.open.allscripts.com/R4/fhir-R4/
+    capability_statement: https://tw-fhir-r4.open.allscripts.com/R4/fhir-R4/metadata
+    audience: [provider]
+    verified: '2026-09-01'
+    verification: >-
+      Probed once; the connection timed out with no response (curl exit 28). Recorded as unreachable at
+      the time of probe rather than as absent - the URL is published by Veradigm and was not retried.
+    http_status: 0
+  - name: TouchWorks EHR - R4 patient endpoint
+    base_url: https://tw-fhir-r4.open.allscripts.com/R4/open-R4/
+    capability_statement: https://tw-fhir-r4.open.allscripts.com/R4/open-R4/metadata
+    audience: [patient]
+    verified: '2026-09-01'
+    verification: Probed once; connection timed out with no response (curl exit 28). Not retried.
+    http_status: 0
+    note: >-
+      TouchWorks EHR was divested to Harris/Altera in 2022. Veradigm still publishes these endpoints on
+      its sandbox page but directs Altera product integrations to ADP@alterahealth.com, so an integrator
+      should confirm which developer program owns this surface before building on it.
+credentials:
+  self_service: false
+  how_to_obtain:
+    - item: OAuth Client ID / Client Secret
+      how: Issued by the Veradigm Connect portal when a FHIR application is registered on the FHIR App page.
+    - item: Provider test credentials
+      how: Request form linked from the FHIR Partner Testing Environments page.
+    - item: Patient test credentials
+      how: Email VeradigmConnect@veradigm.com for instructions on configuring a patient for testing.
+    - item: Testing-environment access
+      how: >-
+        "Veradigm Connect subscribers who require testing credentials for these environments must submit
+        this request" - a form on the sandbox page.
+published_test_values:
+  - name: OAuth Redirect URL (desktop / native)
+    value: 'urn:ietf:wg:oauth:2.0:oob'
+    source: https://developer.veradigm.com/Fhir/ProcessOverview
+  - name: OAuth Redirect URL (suggested default when unsure)
+    value: http://localhost/callback
+    source: https://developer.veradigm.com/Fhir/FHIR_Sandboxes
+  - name: Callback URL example used in the testing walkthrough
+    value: http://localhost/callback
+    source: https://developer.veradigm.com/Fhir/ProcessOverview
+  - name: Sandbox client identifier embedded in the published base URL
+    value: CP00101
+    note: >-
+      Veradigm's own sandbox client code, published in the base URL and echoed in the CapabilityStatement
+      as implementation.description "Veradigm Connect CP00101". Not a credential.
+tooling:
+  - name: Postman
+    note: >-
+      "The Veradigm FHIR API teams uses Postman to test Patient and User type FHIR applications." No
+      public Postman collection or workspace is published - the tool is recommended, the collection is not
+      shipped.
+  - name: Custom utilities
+    note: System-type applications need a custom test harness; no Veradigm-supplied one exists.
+recommended_environment_variables:
+  note: Verbatim from the Process Overview testing section - the variables Veradigm tells developers to set up.
+  variables: [FhirURL, AuthURL, CallbackURL, TokenURL, ClientID]
+test_clocks: false
+fixture_tooling: false
+gaps:
+  - No public sandbox exists for the proprietary Unity API; Unity access requires a paid Integrator subscription.
+  - No published Postman collection, no seeded synthetic patient set, and no reset/fixture tooling.

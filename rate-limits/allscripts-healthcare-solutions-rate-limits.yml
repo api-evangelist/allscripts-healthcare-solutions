@@ -4,55 +4,112 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Allscripts Healthcare Solutions
 providerId: allscripts-healthcare-solutions
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-09-01'
+method: searched
+source: >-
+  https://developer.veradigm.com/Fhir/BulkData, https://developer.veradigm.com/Fhir/Searching,
+  https://developer.veradigm.com/Fhir/EndpointDirectory. Supersedes the placeholder written by the
+  2026-05-04 bulk sweep.
+reconciled: true
 tags:
-  - Healthcare IT
-  - EHR
-  - Clinical
-  - FHIR
-  - Rate Limiting
-description: Allscripts / Veradigm does not publish concrete public per-second or per-minute API rate
-  limits. Limits for Unity, FHIR, and Practice Fusion APIs are enforced per partner registration and per
-  FHIR-server tenant. Patient-facing FHIR endpoints follow ONC / Cures Act non-discrimination requirements
-  but are subject to operational throttling.
-sources:
-  - https://veradigm.com
-  - https://developer.veradigm.com
-notes: No public TPS/RPM numbers. Reconcile against partner-program registration and tenant-specific FHIR-server
-  limits.
+- Healthcare IT
+- EHR
+- Clinical
+- FHIR
+- Rate Limiting
+description: >-
+  Veradigm (formerly Allscripts Healthcare Solutions) publishes NO numeric rate limit anywhere on its
+  developer surface - no requests per second, no requests per minute, no daily quota, for either the FHIR
+  API or the proprietary Unity API. What it does publish is one real runtime throttling contract, on the
+  FHIR Bulk Data polling loop, and one size-based rejection. Those are recorded below with the exact
+  headers, because for an agent the runtime signal is worth more than a number in a document.
+notes: >-
+  limit_count is 0 by design, not by omission: the docs were read and contain no figure. Production
+  throughput allowances are governed per partner registration and per customer FHIR-server tenant, which
+  are contract terms rather than published limits.
+limit_count: 0
 responseCodes:
   throttled: 429
+  too_large: 413
   unauthorized: 401
+  forbidden: 403
+headers:
+- name: Retry-After
+  direction: response
+  units: seconds
+  where: FHIR Bulk Data export status responses while the job is in progress.
+  contract: >-
+    "Retry-After: Suggested duration of time until the next status request. This is measured in seconds. If
+    a status request is made prior to the retry-after date/time, the FHIR API responds with a HTTP 429 Too
+    Many Requests error." This is the ONLY documented path to a 429 in the entire Veradigm API surface.
+  source: https://developer.veradigm.com/Fhir/BulkData
+- name: X-Progress
+  direction: response
+  units: percentage
+  where: FHIR Bulk Data export status responses while the job is in progress.
+  contract: Percentage complete. Use it to pace polling rather than fixed-interval retry.
+  source: https://developer.veradigm.com/Fhir/BulkData
+- name: Expires
+  direction: response
+  where: FHIR Bulk Data export completion response.
+  contract: >-
+    When the generated export packages stop being downloadable. "You can download the file packages as many
+    times as necessary, but once they expire, they are no longer available." No fixed duration is published.
+  source: https://developer.veradigm.com/Fhir/BulkData
+absent_headers:
+  checked: ['X-RateLimit-Limit', 'X-RateLimit-Remaining', 'X-RateLimit-Reset', 'RateLimit-Limit', 'RateLimit-Remaining', 'RateLimit-Reset']
+  result: none documented
+  note: >-
+    Veradigm documents no standard rate-limit header family, so a client cannot see how much budget it has
+    left before it is throttled - only that it was.
 limits:
-  - name: Unity API Per-Partner Throughput
-    scope: partner
-    metric: varies
-    limit: per-partner-registration; not publicly documented
-  - name: FHIR API Tenant Throughput
-    scope: tenant
-    metric: varies
-    limit: per-tenant; not publicly documented but enforced by the FHIR server
-  - name: Practice Fusion API
-    scope: partner
-    metric: varies
-    limit: per-partner-registration; not publicly documented
+- name: Bulk Data export status polling
+  scope: per-export-job
+  window: variable, set per response
+  metric: requests
+  limit: 1 status request per Retry-After interval
+  enforcement: HTTP 429 Too Many Requests
+  documented: true
+  source: https://developer.veradigm.com/Fhir/BulkData
+- name: Search result size ceiling
+  scope: per-request
+  metric: response size
+  limit: not numerically published
+  enforcement: HTTP 413 Request too large
+  documented: true
+  mitigation: Narrow with _lastUpdated or a date range and page with _count; use Bulk Data $export for whole populations.
+  source: https://developer.veradigm.com/Fhir/Searching
+- name: FHIR API tenant throughput
+  scope: tenant
+  metric: varies
+  limit: not publicly documented
+  documented: false
+  note: Enforced per customer FHIR-server installation; the Endpoint Directory shows one endpoint per client organization.
+- name: Unity API partner throughput
+  scope: partner
+  metric: varies
+  limit: not publicly documented
+  documented: false
+  note: Governed by the paid Veradigm Connect Integrator subscription; the Unity API has no public documentation at all.
 policies:
-  - name: SMART-on-FHIR Authorization
-    description: FHIR API access uses SMART-on-FHIR / OAuth 2.0 authorization with launch contexts; tokens
-      are scoped per app and per patient.
-  - name: Backoff Strategy
-    description: On 429 responses implement exponential backoff with jitter and honor Retry-After if returned.
-  - name: ONC Non-Discrimination
-    description: Patient-access FHIR endpoints must not discriminate against certified app developers per
-      21st Century Cures Act information-blocking rules; throttling must be reasonable and operationally
-      justified.
-  - name: Partner Registration
-    description: Partner-program registration governs production-tier rate-limit allowances and certification
-      status.
+- name: SMART-on-FHIR Authorization
+  description: >-
+    FHIR access uses SMART App Launch 2.0.0 / OAuth 2.0 with launch contexts; tokens are scoped per
+    application and per patient, and token lifetime is configured per client in the Veradigm License
+    Management Portal.
+- name: Backoff Strategy
+  description: >-
+    Honour Retry-After on bulk polling. Elsewhere no throttling signal exists, so use exponential backoff
+    with jitter on 5xx and treat 413 as a query-shape problem rather than a transient failure.
+- name: ONC Non-Discrimination
+  description: >-
+    Patient-access FHIR endpoints fall under 21st Century Cures Act information-blocking rules; throttling
+    must be reasonable and operationally justified. Veradigm publishes its production endpoint list as a
+    downloadable NDJSON FHIR Bundle in support of that requirement.
+- name: Partner Registration
+  description: >-
+    Production-tier allowances and certification status are governed by Veradigm Connect registration and
+    by the customer activating the application in their own License Management Portal.
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

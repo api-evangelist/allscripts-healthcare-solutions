@@ -27,38 +27,176 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/allscripts-healthcare-solutions.png
 tags:
-  - Healthcare IT
-  - EHR
-  - Clinical
+- Healthcare IT
+- EHR
+- Clinical
+- FHIR
+- HL7
+- SMART on FHIR
+- USCDI
+- Interoperability
+- Patient Access
+- 21st Century Cures
+- Veradigm
 description: >-
-  Allscripts Healthcare Solutions is a major US corporation and Fortune 1000 company. The Allscripts Healthcare Solutions API provides programmatic access to its platform services, data, and integrations for enterprise customers and partners.
+  Allscripts Healthcare Solutions renamed itself Veradigm in 2022 and sold its hospital and
+  large-physician-practice business (Sunrise, Paragon, TouchWorks) to Harris Computer, which now trades as
+  Altera Digital Health. allscripts.com redirects to veradigm.com, and the developer program is now the
+  Veradigm Connect Developer Program at developer.veradigm.com. Two API estates exist. The first is a
+  public, standards-based HL7 FHIR R4 (4.0.1) surface serving USCDI data for 21st Century Cures Act patient
+  and provider access - a live sandbox CapabilityStatement declares 31 FHIR resources, twelve of which
+  accept create and update and none of which accept delete, authorized with SMART App Launch 2.0.0 over
+  OAuth 2.0 and OpenID Connect, with FHIR Bulk Data $export available to backend System applications. Base
+  URLs are per customer organization and are published in the Veradigm Endpoint Directory, downloadable as
+  an NDJSON FHIR Bundle. The second is the proprietary bidirectional Unity API, the only surface that can
+  write patient demographic, appointment or financial data; it is undocumented publicly and requires a paid
+  Veradigm Connect Integrator subscription. No OpenAPI, no MCP server, no agent card and no public client
+  SDK are published on either estate.
 created: '2026-04-19'
-modified: '2026-04-19'
+modified: '2026-09-01'
 specificationVersion: '0.23'
 apis:
-  - aid: allscripts-healthcare-solutions:allscripts-healthcare-solutions-api
-    name: Allscripts Healthcare Solutions API
-    tags:
-      - Healthcare IT
-      - EHR
-      - Clinical
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.allscripts.com
-    humanURL: https://developer.allscripts.com
-    properties:
-      - url: https://developer.allscripts.com/docs
-        type: Documentation
-    description: >-
-      The Allscripts Healthcare Solutions API provides access to platform services and data for enterprise integration and automation.
+- aid: allscripts-healthcare-solutions:allscripts-healthcare-solutions-api
+  name: Veradigm FHIR R4 API (formerly Allscripts)
+  description: >-
+    HL7 FHIR R4 (4.0.1) REST API for Veradigm EHR, aligned to USCDI for 21st Century Cures Act patient and
+    provider access. The live CapabilityStatement declares 31 resource types (Patient, Encounter,
+    Observation, Condition, MedicationRequest, DiagnosticReport, DocumentReference, CarePlan, CareTeam,
+    Coverage and more), read and search on all of them, create and update on twelve, and delete on none.
+    Authorization is SMART App Launch 2.0.0 over OAuth 2.0 / OpenID Connect, with 237 published scopes
+    across patient, user and system contexts. FHIR Bulk Data $export is available to System applications.
+    Production base URLs are per customer organization and come from the Veradigm Endpoint Directory; the
+    baseURL recorded here is Veradigm's own published sandbox base, which answered an unauthenticated
+    GET /metadata with HTTP 200 on 2026-09-01.
+  humanURL: https://developer.veradigm.com/Fhir/Introduction
+  baseURL: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  tags:
+  - FHIR
+  - R4
+  - EHR
+  - SMART on FHIR
+  - USCDI
+  - Patient Access
+  - Bulk FHIR
+  properties:
+  - type: CapabilityStatement
+    url: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+  - type: SMARTConfiguration
+    url: well-known/allscripts-healthcare-solutions-smart-configuration.json
+  - type: OpenIDConfiguration
+    url: well-known/allscripts-healthcare-solutions-openid-configuration.json
+  - type: Documentation
+    url: https://developer.veradigm.com/Fhir/Introduction
+  - type: APIReference
+    url: https://developer.veradigm.com/Fhir/Resources
+  - type: Documentation
+    url: https://developer.veradigm.com/Fhir/Searching
+  - type: Documentation
+    url: https://developer.veradigm.com/Fhir/BulkData
+  - type: Documentation
+    url: https://developer.veradigm.com/Fhir/EndpointDirectory
+  - type: Authentication
+    url: https://developer.veradigm.com/Fhir/SMARTonFHIR
+  - type: GettingStarted
+    url: https://developer.veradigm.com/Fhir/ProcessOverview
+  - type: Sandbox
+    url: https://developer.veradigm.com/Fhir/FHIR_Sandboxes
+- aid: allscripts-healthcare-solutions:veradigm-unity-api
+  name: Veradigm Unity API
+  description: >-
+    Veradigm's proprietary bidirectional API and the only Veradigm surface that can WRITE patient
+    demographic, appointment or financial data - the Process Overview page states plainly that the FHIR API
+    is read-only for deeper integration purposes and that Unity is required to read or write against
+    Veradigm Practice Management. Unity is also the recommended app-launch path for Veradigm EHR versions
+    before 24.5. No public reference, base URL, OpenAPI or sandbox is published: access requires a paid
+    Veradigm Connect Integrator subscription (Bronze through Platinum Plus) and Veradigm certification. No
+    base URL is recorded here because Veradigm publishes none.
+  humanURL: https://developer.veradigm.com/Home/LearnMore
+  tags:
+  - Unity
+  - EHR
+  - Practice Management
+  - Proprietary
+  properties:
+  - type: Documentation
+    url: https://developer.veradigm.com/Home/LearnMore
+  - type: Pricing
+    url: https://developer.veradigm.com/Home/LearnMore
 common:
-  - type: DomainSecurity
-    url: security/allscripts-healthcare-solutions-domain-security.yml
-  - type: GitHubOrganization
-    url: https://github.com/allscriptshealthcare
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/allscripts
-  - type: Website
-    url: https://www.allscripts.com
+- type: Website
+  url: https://www.allscripts.com
+- type: DeveloperPortal
+  url: https://developer.veradigm.com/
+- type: Documentation
+  url: https://developer.veradigm.com/Fhir/Introduction
+- type: APIReference
+  url: https://developer.veradigm.com/Fhir/Resources
+- type: GettingStarted
+  url: https://developer.veradigm.com/Fhir/ProcessOverview
+- type: SignUp
+  url: https://developer.veradigm.com/Account/RegisterSelf
+- type: Pricing
+  url: https://developer.veradigm.com/Home/LearnMore
+- type: Marketplace
+  url: https://expo.veradigm.com/
+- type: StatusPage
+  url: https://status.veradigm.com/
+- type: Deprecation
+  url: https://developer.veradigm.com/Fhir/Introduction
+- type: TermsOfService
+  url: https://veradigm.com/legal/terms-of-use/
+- type: PrivacyPolicy
+  url: https://veradigm.com/legal/privacy-notice/
+- type: GitHubOrganization
+  url: https://github.com/allscriptshealthcare
+- type: LinkedIn
+  url: https://www.linkedin.com/company/allscripts
+- type: CapabilityStatement
+  url: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+- type: SMARTConfiguration
+  url: well-known/allscripts-healthcare-solutions-smart-configuration.json
+- type: OpenIDConfiguration
+  url: well-known/allscripts-healthcare-solutions-openid-configuration.json
+- type: WellKnown
+  url: well-known/allscripts-healthcare-solutions-well-known.yml
+- type: Authentication
+  url: authentication/allscripts-healthcare-solutions-authentication.yml
+- type: OAuthScopes
+  url: scopes/allscripts-healthcare-solutions-scopes.yml
+- type: Conformance
+  url: conformance/allscripts-healthcare-solutions-conformance.yml
+- type: ErrorCatalog
+  url: errors/allscripts-healthcare-solutions-problem-types.yml
+- type: Conventions
+  url: conventions/allscripts-healthcare-solutions-conventions.yml
+- type: Lifecycle
+  url: lifecycle/allscripts-healthcare-solutions-lifecycle.yml
+- type: Sandbox
+  url: sandbox/allscripts-healthcare-solutions-sandbox.yml
+- type: DataModel
+  url: data-model/allscripts-healthcare-solutions-data-model.yml
+- type: Packages
+  url: packages/allscripts-healthcare-solutions-packages.yml
+- type: MCPServer
+  url: mcp/allscripts-healthcare-solutions-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/allscripts-healthcare-solutions-llms.txt
+- type: Plans
+  url: plans/allscripts-healthcare-solutions-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/allscripts-healthcare-solutions-rate-limits.yml
+- type: FinOps
+  url: finops/allscripts-healthcare-solutions-finops.yml
+- type: DomainSecurity
+  url: security/allscripts-healthcare-solutions-domain-security.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-01'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

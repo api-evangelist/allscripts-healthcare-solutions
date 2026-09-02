@@ -1,0 +1,90 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  https://developer.veradigm.com/Fhir/Searching (the "Error Handling in Searches" section) and
+  https://developer.veradigm.com/Fhir/BulkData (the export status and error flows).
+format: hl7-fhir-operationoutcome
+description: >-
+  Error surface of the Veradigm (formerly Allscripts) FHIR API. There is no OpenAPI document to derive
+  4xx/5xx responses from, so every entry below is taken from a status code the provider's own developer
+  documentation states it returns. The error envelope is the FHIR OperationOutcome resource, not RFC 9457
+  problem+json - that is the correct convention for a FHIR server and should not be read as a gap.
+envelope:
+  resource: OperationOutcome
+  fields:
+    - severity
+    - code
+    - description
+  evidence: >-
+    Bulk Data page - "If the export request has resulted in an error, the response includes: Status: Error;
+    OperationOutcome resource, which includes the severity, code, and description of the error."
+  bulk_error_files: >-
+    A completed bulk export manifest carries an error[] array whose entries are NDJSON files of
+    type OperationOutcome, so partial success is reported as data rather than as a failed request.
+problems:
+  - status: 401
+    title: Unauthorized
+    meaning: No valid SMART/OAuth 2.0 access token was presented, or the token has expired.
+    remediation: >-
+      Re-run the SMART App Launch authorization flow, or exchange the refresh token if offline_access was
+      granted. Token lifetime is configured per client in the Veradigm License Management Portal, so it
+      varies by customer.
+    source: https://developer.veradigm.com/Fhir/Searching
+  - status: 403
+    title: Forbidden
+    meaning: >-
+      The token is valid but does not carry a scope covering this resource and context, or the customer
+      organization has not licensed this application in the client License Management Portal.
+    remediation: >-
+      Check the scopes granted to the registered FHIR application against the resource being requested,
+      and confirm the client organization has activated the application. Note that a partially-authorized
+      read may succeed and return REDACTED data instead of a 403 - see redaction below.
+    source: https://developer.veradigm.com/Fhir/Searching
+  - status: 404
+    title: Not found
+    meaning: The requested resource id does not exist, or the FHIR path/base URL is wrong for this client environment.
+    remediation: >-
+      Confirm the base URL against the Veradigm Endpoint Directory - endpoints ending /fhir are provider
+      endpoints and endpoints ending /open are patient endpoints, and they are not interchangeable.
+    source: https://developer.veradigm.com/Fhir/Searching
+  - status: 413
+    title: Request too large
+    meaning: The search returned or requested more data than the FHIR server will serve in one request.
+    remediation: >-
+      Narrow the search with _lastUpdated or a date range, and page the result with _count. For whole-population
+      extraction use FHIR Bulk Data $export instead of paging the single-patient API.
+    source: https://developer.veradigm.com/Fhir/Searching
+  - status: 429
+    title: Too Many Requests
+    meaning: >-
+      Returned specifically when a bulk-data export status request is made before the Retry-After interval
+      supplied on the previous status response has elapsed.
+    remediation: Honour the Retry-After header value (in seconds) before polling the Content-Location URL again.
+    source: https://developer.veradigm.com/Fhir/BulkData
+  - status: 202
+    title: Accepted (asynchronous kickoff - not an error)
+    meaning: >-
+      A successful $export kickoff. No data is returned; the Content-Location header carries the status URL.
+      Listed here because clients that treat any non-200 as a failure break on this response.
+    remediation: Read the Content-Location header and poll it.
+    source: https://developer.veradigm.com/Fhir/BulkData
+special_cases:
+  - name: Redacted data
+    status: 200
+    description: >-
+      A 200 response may contain elements marked "redacted". Veradigm returns these when its Clinical
+      Authorization Service determines the requester is not authorized to see the value, but where knowing
+      that data EXISTS is clinically relevant. An agent must not treat a redacted element as a missing or
+      null value - it is a deliberate signal, and the documentation states the behaviour exists to prevent
+      patient-safety issues.
+    source: https://developer.veradigm.com/Fhir/Searching
+  - name: Provenance cannot be searched
+    status: 200
+    description: >-
+      The Provenance resource supports read by id but NOT search. Requesting Provenance as a search target
+      will not work; use _include / _revinclude=Provenance:target against another resource instead.
+    source: https://developer.veradigm.com/Fhir/Searching
+gaps:
+  - >-
+    Veradigm publishes no numbered error-code registry and no per-resource error reference. The five status
+    codes above are the complete published set; 5xx behaviour is undocumented.

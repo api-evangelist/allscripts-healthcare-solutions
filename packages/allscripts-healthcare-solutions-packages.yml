@@ -1,0 +1,76 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  Registry searches run 2026-09-01 against npm (registry.npmjs.org search), PyPI (pypi.org/pypi/<name>/json),
+  NuGet (azuresearch-usnc.nuget.org/query + api.nuget.org registration), and the GitHub organizations
+  github.com/allscriptshealthcare and github.com/veradigm.
+description: >-
+  Veradigm (formerly Allscripts Healthcare Solutions) ships NO public API client library. Its documentation
+  repeatedly refers to an "SDK" as a benefit of a paid Veradigm Connect Integrator subscription, but that SDK
+  is distributed to subscribers and is not published to any public registry. The two packages below are the
+  only first-party artifacts found on a public registry; neither is an API client, and both are stale by
+  seven and nine years respectively - recorded here because a first-party package whose last release predates
+  the API it would wrap is exactly the decay evidence this artifact exists to capture.
+sdk_count: 0
+sdk_note: >-
+  No SDKs pointer is emitted for this provider. Nothing found is a client library for the FHIR or Unity API,
+  and claiming otherwise would credit Veradigm with a developer surface it does not publish.
+packages:
+  - language: csharp
+    registry: nuget
+    name: Allscripts.FMH.TableInitializer
+    url: https://www.nuget.org/packages/Allscripts.FMH.TableInitializer
+    install: dotnet add package Allscripts.FMH.TableInitializer
+    official: true
+    official_evidence: 'NuGet authors field = "Allscripts"'
+    version: 1.0.15
+    published: '2016-06-23'
+    description: Allscripts.FMH.TableManager Class Library (FMH = FollowMyHealth).
+    api_client: false
+    note: >-
+      A .NET utility library, not an API client. Last published 2016-06-23 - nearly a decade before the
+      FHIR R4 estate profiled here (server build 4.22.0.1, released 2026-05-07). Total downloads ~23,000.
+  - language: csharp
+    registry: nuget
+    name: CDS.ClientSetup
+    url: https://www.nuget.org/packages/CDS.ClientSetup
+    install: dotnet add package CDS.ClientSetup
+    official: true
+    official_evidence: 'NuGet authors field = "Allscripts Healthcare Solutions, Inc."'
+    version: 19.4.0.142
+    published: '2019-09-19'
+    description: >-
+      NuGet package for Allscripts Clinical Decision Support (CDS) Client Setup packages (to install client
+      certificates).
+    api_client: false
+    note: Certificate-installation tooling for the CDS client, not an API client. Last published 2019-09-19.
+registries_probed:
+  - registry: npm
+    result: none
+    detail: >-
+      Searches for "allscripts", "veradigm" and "unity-api-allscripts" returned no first-party package.
+      The only Allscripts-named results are third-party (a browser-automation package and a third-party
+      universal FHIR SDK).
+  - registry: pypi
+    result: none
+    detail: pypi.org/pypi/veradigm/json and pypi.org/pypi/allscripts/json both returned HTTP 404.
+  - registry: nuget
+    result: 2 first-party packages
+    detail: 'Query "allscripts" returned 2 total hits, both authored by Allscripts. Query "veradigm" returned 0.'
+  - registry: github
+    result: none
+    detail: >-
+      Both github.com/allscriptshealthcare and github.com/veradigm exist and return HTTP 200, but
+      api.github.com/orgs/<org>/repos returns an EMPTY array for each - zero public repositories. There is
+      no open-source client, sample or reference implementation to fork.
+  - registry: maven-central
+    result: not-probed
+    detail: No Java SDK is referenced anywhere in the developer documentation, so no Maven coordinate was available to query.
+  - registry: rubygems
+    result: not-probed
+  - registry: packagist
+    result: not-probed
+  - registry: crates.io
+    result: not-probed
+  - registry: pkg.go.dev
+    result: not-probed

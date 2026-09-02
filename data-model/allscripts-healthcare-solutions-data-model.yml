@@ -1,0 +1,690 @@
+generated: '2026-09-01'
+method: derived
+source: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+docs: https://developer.veradigm.com/Fhir/Resources
+description: Entity model of the Veradigm (formerly Allscripts) FHIR R4 API, derived mechanically from the live
+  CapabilityStatement rather than from an OpenAPI document - Veradigm publishes none. Each entity is a FHIR R4 resource
+  the server declares it serves, with the interactions it declares and the search parameters it declares for that
+  resource. Relationships are taken ONLY from search parameters the server types as 'reference'; FHIR resource-to-resource
+  links that Veradigm does not expose as a searchable reference are not listed, because they are not navigable through
+  this API.
+model: HL7 FHIR R4 (4.0.1)
+summary:
+  entity_count: 31
+  writable_entity_count: 12
+  read_only_entity_count: 19
+  bulk_exportable_entity_count: 25
+  relationship_count: 38
+  declared_operations: 0
+  note: Every writable entity supports exactly create and update. NO entity declares delete or patch, so there is
+    no removal path anywhere in this API - see the reversibility block in conventions/.
+id_scheme:
+  style: FHIR logical id per resource
+  example: INF-101
+  note: Ids are opaque per client environment; the docs use INF-101 throughout as the worked example. There are
+    no typed id prefixes.
+entities:
+- entity: Condition
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - clinical-status
+  - category
+  - code
+  - onset-date
+  - recorded-date
+  - abatement-date
+  - encounter
+  reference_params:
+  - encounter
+  - patient
+  bulk_exportable: true
+- entity: Patient
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - gender
+  - birthdate
+  - identifier
+  - name
+  - family
+  - given
+  - death-date
+  reference_params: []
+  bulk_exportable: true
+- entity: AllergyIntolerance
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - clinical-status
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: MedicationRequest
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - intent
+  - status
+  - authoredon
+  - encounter
+  - patient.identifier
+  reference_params:
+  - encounter
+  - patient
+  bulk_exportable: true
+- entity: Observation
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - category
+  - code
+  - date
+  - status
+  - combo-code
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: Device
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - type
+  - patient
+  - status
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: Immunization
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - date
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: CarePlan
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - category
+  - date
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: DiagnosticReport
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - category
+  - code
+  - date
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: Goal
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - lifecycle-status
+  - target-date
+  - patient
+  - achievement-status
+  - description
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: Procedure
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - date
+  - status
+  - code
+  - patient
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: Organization
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - name
+  - address
+  - partof
+  - address-state
+  - address-city
+  - address-postalcode
+  reference_params:
+  - partof
+  bulk_exportable: true
+- entity: Medication
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params: []
+  reference_params: []
+  bulk_exportable: true
+- entity: Provenance
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  reference_params: []
+  bulk_exportable: true
+- entity: DocumentReference
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - category
+  - type
+  - date
+  - period
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: Location
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - name
+  - address
+  - address-city
+  - address-state
+  - address-postalcode
+  - type
+  - partof
+  - organization
+  - operationalstatus
+  reference_params:
+  - organization
+  - partof
+  bulk_exportable: true
+- entity: Encounter
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - class
+  - type
+  - date
+  - identifier
+  - discharge-disposition
+  - location
+  reference_params:
+  - location
+  - patient
+  bulk_exportable: true
+- entity: Practitioner
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - name
+  - family
+  - given
+  - identifier
+  - address
+  - address-city
+  - address-postalcode
+  - communication
+  - address-state
+  reference_params: []
+  bulk_exportable: true
+- entity: Binary
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  reference_params: []
+  bulk_exportable: true
+- entity: RelatedPerson
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - patient
+  - name
+  reference_params:
+  - patient
+  bulk_exportable: true
+- entity: PractitionerRole
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - practitioner
+  - specialty
+  - service
+  - location
+  - practitioner.identifier
+  - practitioner.name
+  reference_params:
+  - location
+  - practitioner
+  - service
+  bulk_exportable: true
+- entity: Group
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - characteristic
+  - characteristic-value
+  - type
+  - member
+  reference_params:
+  - member
+  bulk_exportable: true
+- entity: CareTeam
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - patient
+  - id
+  - _id
+  - subject
+  - encounter
+  - category
+  - participant
+  - status
+  - role
+  reference_params:
+  - encounter
+  - participant
+  - patient
+  - subject
+  bulk_exportable: true
+- entity: MedicationStatement
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - effective
+  - category
+  - source
+  - patient.identifier
+  reference_params:
+  - patient
+  - source
+  bulk_exportable: true
+- entity: MedicationAdministration
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - effective-time
+  - reason-given
+  - subject
+  - reason-not-given
+  - request
+  - patient.identifier
+  reference_params:
+  - patient
+  - request
+  - subject
+  bulk_exportable: true
+- entity: ServiceRequest
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - category
+  - authored
+  - code
+  - status
+  - patient.identifier
+  reference_params:
+  - patient
+  bulk_exportable: false
+- entity: Questionnaire
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient.identifier
+  reference_params: []
+  bulk_exportable: false
+- entity: QuestionnaireResponse
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - questionnaire
+  - status
+  - authored
+  - patient.identifier
+  reference_params:
+  - patient
+  - questionnaire
+  bulk_exportable: false
+- entity: MedicationDispense
+  interactions:
+  - read
+  - search-type
+  - create
+  - update
+  writable: true
+  search_params:
+  - id
+  - _id
+  - patient
+  - status
+  - type
+  reference_params:
+  - patient
+  bulk_exportable: false
+- entity: Specimen
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - patient
+  reference_params:
+  - patient
+  bulk_exportable: false
+- entity: Coverage
+  interactions:
+  - read
+  - search-type
+  writable: false
+  search_params:
+  - id
+  - _id
+  - patient
+  reference_params:
+  - patient
+  bulk_exportable: false
+relationships:
+- from: Condition
+  via: encounter
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Condition.encounter is type reference
+- from: Condition
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Condition.patient is type reference
+- from: AllergyIntolerance
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam AllergyIntolerance.patient is type reference
+- from: MedicationRequest
+  via: encounter
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationRequest.encounter is type reference
+- from: MedicationRequest
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationRequest.patient is type reference
+- from: Observation
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Observation.patient is type reference
+- from: Device
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Device.patient is type reference
+- from: Immunization
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Immunization.patient is type reference
+- from: CarePlan
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam CarePlan.patient is type reference
+- from: DiagnosticReport
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam DiagnosticReport.patient is type reference
+- from: Goal
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Goal.patient is type reference
+- from: Procedure
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Procedure.patient is type reference
+- from: Organization
+  via: partof
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Organization.partof is type reference
+- from: DocumentReference
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam DocumentReference.patient is type reference
+- from: Location
+  via: organization
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Location.organization is type reference
+- from: Location
+  via: partof
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Location.partof is type reference
+- from: Encounter
+  via: location
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Encounter.location is type reference
+- from: Encounter
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Encounter.patient is type reference
+- from: RelatedPerson
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam RelatedPerson.patient is type reference
+- from: PractitionerRole
+  via: location
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam PractitionerRole.location is type reference
+- from: PractitionerRole
+  via: practitioner
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam PractitionerRole.practitioner is type reference
+- from: PractitionerRole
+  via: service
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam PractitionerRole.service is type reference
+- from: Group
+  via: member
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Group.member is type reference
+- from: CareTeam
+  via: encounter
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam CareTeam.encounter is type reference
+- from: CareTeam
+  via: participant
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam CareTeam.participant is type reference
+- from: CareTeam
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam CareTeam.patient is type reference
+- from: CareTeam
+  via: subject
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam CareTeam.subject is type reference
+- from: MedicationStatement
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationStatement.patient is type reference
+- from: MedicationStatement
+  via: source
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationStatement.source is type reference
+- from: MedicationAdministration
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationAdministration.patient is type reference
+- from: MedicationAdministration
+  via: request
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationAdministration.request is type reference
+- from: MedicationAdministration
+  via: subject
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationAdministration.subject is type reference
+- from: ServiceRequest
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam ServiceRequest.patient is type reference
+- from: QuestionnaireResponse
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam QuestionnaireResponse.patient is type reference
+- from: QuestionnaireResponse
+  via: questionnaire
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam QuestionnaireResponse.questionnaire is type reference
+- from: MedicationDispense
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam MedicationDispense.patient is type reference
+- from: Specimen
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Specimen.patient is type reference
+- from: Coverage
+  via: patient
+  kind: belongs_to
+  evidence: CapabilityStatement searchParam Coverage.patient is type reference

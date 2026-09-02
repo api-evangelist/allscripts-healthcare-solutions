@@ -1,0 +1,117 @@
+generated: '2026-09-01'
+method: searched
+source: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/.well-known/smart-configuration,
+  https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/.well-known/openid-configuration, fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+docs: https://developer.veradigm.com/Fhir/Introduction
+description: 'How a client authenticates to the Veradigm (formerly Allscripts) FHIR API. There is no OpenAPI
+  document to derive securitySchemes from, so this profile is read from three live provider-served documents
+  instead: the SMART App Launch configuration on the published sandbox base, the OpenID Connect discovery
+  document on the authorization server it names as issuer, and the FHIR R4 CapabilityStatement, whose
+  rest.security block declares SMART-on-FHIR and carries the SMART oauth-uris extension with the authorize
+  and token endpoints. Veradigm implements the HL7 SMART Application Launch Framework Implementation Guide
+  Release 2.0.0 and OpenID Connect Core 1.0.'
+summary:
+  types:
+  - oauth2
+  - openIdConnect
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
+  - refreshToken
+  pkce:
+  - S256
+  - plain
+  client_types:
+  - confidential (client_secret)
+  - confidential (private_key_jwt via developer-hosted JWKS)
+  - public
+  mutual_tls: true
+  dpop: true
+  pushed_authorization_requests: true
+  note: Credentials are not self-service. A developer registers on the Veradigm Connect portal, registers
+    a FHIR application (App Type Patient, Provider or System), and the portal issues a Client ID, Secret
+    and Secret Expiration Date. Before an application can reach a client organization the customer must
+    license it themselves in the separate client License Management Portal - the developer cannot do it
+    for them.
+schemes:
+- name: SMART on FHIR - standalone / EHR launch (authorization code)
+  type: oauth2
+  flow: authorizationCode
+  authorizationUrl: https://fhir.fhirpoint.open.allscripts.com/fhirroute/authorizationV2/CP00101/connect/authorize
+  tokenUrl: https://fhir.fhirpoint.open.allscripts.com/fhirroute/authorizationV2/CP00101/connect/token
+  pkce:
+  - plain
+  - S256
+  audience: Patient and Provider FHIR applications
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+  note: 'The capability statement is the discovery entry point: GET [FHIR base]/metadata returns the SMART
+    oauth-uris extension carrying the authorize and token endpoints for that client environment. Redirect
+    URLs (up to five) and launch URLs (up to three) are registered per application; desktop clients may
+    register urn:ietf:wg:oauth:2.0:oob.'
+- name: SMART Backend Services (client credentials)
+  type: oauth2
+  flow: clientCredentials
+  tokenUrl: https://fhir.fhirpoint.open.allscripts.com/fhirroute/authorizationV2/CP00101/connect/token
+  audience: System FHIR applications only
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+  - https://developer.veradigm.com/Fhir/BulkData
+  note: Required for FHIR Bulk Data ($export). The application must be registered with App Type System
+    and must publish a JWKS URL so Veradigm can validate the signed client assertion; Patient and User
+    application types cannot make bulk data requests.
+- name: OpenID Connect
+  type: openIdConnect
+  openIdConnectUrl: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/.well-known/openid-configuration
+  issuer: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization
+  jwks_uri: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/.well-known/openid-configuration/jwks
+  userinfo_endpoint: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/connect/userinfo
+  introspection_endpoint: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/connect/introspect
+  revocation_endpoint: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/connect/revocation
+  end_session_endpoint: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/connect/endsession
+  id_token_signing_alg_values_supported:
+  - RS256
+  token_endpoint_auth_methods_supported:
+  - client_secret_basic
+  - client_secret_post
+  - self_signed_tls_client_auth
+  - tls_client_auth
+  sources:
+  - well-known/allscripts-healthcare-solutions-openid-configuration.json
+- name: Mutual TLS client authentication
+  type: mutualTLS
+  evidence: token_endpoint_auth_methods_supported includes tls_client_auth and self_signed_tls_client_auth;
+    the discovery document publishes mtls_endpoint_aliases and tls_client_certificate_bound_access_tokens.
+  sources:
+  - well-known/allscripts-healthcare-solutions-openid-configuration.json
+token_lifetime:
+  documented: false
+  note: Veradigm states token validity is configured per client in the Veradigm License Management Portal,
+    so no fixed TTL is published.
+  source: https://developer.veradigm.com/Fhir/Introduction
+capabilities_advertised:
+- launch-ehr
+- launch-standalone
+- client-public
+- client-confidential-symmetric
+- context-ehr-patient
+- context-ehr-encounter
+- context-standalone-patient
+- context-standalone-encounter
+- context-passthrough-banner
+- context-passthrough-style
+- context-banner
+- context-style
+- sso-openid-connect
+- permission-offline
+- permission-patient
+- permission-user
+- client-confidential-asymmetric
+- authorize-post
+- permission-v1
+- permission-v2
+gated:
+  unity_api: The proprietary bidirectional Unity API - the only Veradigm surface that can write patient
+    demographic, appointment or financial data - is not documented publicly. Its authentication model
+    could not be observed; access requires a paid Veradigm Connect Integrator subscription.

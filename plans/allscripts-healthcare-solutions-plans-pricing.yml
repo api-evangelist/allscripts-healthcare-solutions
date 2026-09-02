@@ -4,96 +4,141 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Allscripts Healthcare Solutions
 providerId: allscripts-healthcare-solutions
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-09-01'
+method: searched
+source: https://developer.veradigm.com/Home/LearnMore
+reconciled: true
 tags:
-  - Healthcare IT
-  - EHR
-  - Clinical
-  - FHIR
-  - Veradigm
-description: Allscripts (now Veradigm) provides EHR APIs for ambulatory and acute-care customers, including
-  Unity (proprietary) and FHIR R4 endpoints supporting USCDI / 21st Century Cures Act regulated data exchange.
-  Read-only FHIR access for patient/app developers can be free under regulatory requirements; commercial
-  Unity API access for Sunrise / TouchWorks / Practice Fusion integrations is gated behind Veradigm Developer
-  Program agreements with custom commercial terms.
-sources:
-  - https://veradigm.com
-  - https://developer.veradigm.com
-notes: Public price list is not published. Plans below are placeholder shells; replace with negotiated
-  Developer Program terms once contracted.
+- Healthcare IT
+- EHR
+- Clinical
+- FHIR
+- Veradigm
+description: >-
+  Veradigm (formerly Allscripts Healthcare Solutions) publishes a real, named subscription ladder for the
+  Veradigm Connect Developer Program on its Learn More page - one free tier plus five paid Integrator tiers -
+  together with the benefit matrix that separates them. What it does NOT publish is a single price. The page
+  says "Once you select a tier, pay monthly or receive a 10% discount if purchased annually" without naming
+  any monthly figure, so every paid tier below carries "contact sales". This supersedes the placeholder
+  plans written by the 2026-05-04 bulk sweep, which invented three tiers that do not exist.
+notes: >-
+  Prices are genuinely unpublished, not merely unfound: the tier table lists benefit counts (API workshop
+  passes, certifications, recertifications, App Expo product slots) but no currency figure anywhere.
+  Certification is explicitly unavailable on the Open tier.
+plan_count: 6
+billing:
+  periods: [monthly, annual]
+  annual_discount: '10%'
+  source: https://developer.veradigm.com/Home/LearnMore
 plans:
-  - id: allscripts-healthcare-solutions-fhir-regulated
-    name: FHIR Regulated Access (USCDI / Cures Act)
-    type: freemium
-    description: Free patient and app-developer access to FHIR R4 endpoints required by the 21st Century
-      Cures Act / USCDI regulations. Subject to registration and SMART-on-FHIR launch contexts.
-    entries:
-      - label: FHIR R4 API Access
-        description: Regulated patient/app-developer FHIR API access
-        name: fhir_access
-        type: flat
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: US
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: FHIR R4 Patient Access
-      - name: SMART-on-FHIR App Launch
-      - name: USCDI Data Classes
-  - id: allscripts-healthcare-solutions-developer-program
-    name: Veradigm Developer Program
-    type: enterprise
-    description: Commercial integration program for ISVs / partners building on Sunrise, TouchWorks, Professional,
-      and Practice Fusion. Custom commercial terms covering Unity API and embedded analytics.
-    entries:
-      - label: Developer Program Subscription
-        description: Annual program subscription with negotiated API access scope
-        name: developer_program
-        type: subscription
-        metric: contract
-        limit: -1
-        timeFrame: year
-        geo: US
-        unit: 1
-        price: contact sales
-        userMultiplied: false
-    elements:
-      - name: Unity API Access
-      - name: Veradigm FHIR API Access
-      - name: Practice Fusion API Access
-      - name: Partner Account Management
-      - name: Sandbox Access
-      - name: Certification Program
-  - id: allscripts-healthcare-solutions-enterprise
-    name: Enterprise / Health-System Customer
-    type: enterprise
-    description: Direct customer engagement for health-system EHR licensing including bundled API access
-      across the Veradigm portfolio.
-    entries:
-      - label: Enterprise Subscription
-        description: Custom-quoted health-system EHR contract
-        name: enterprise_subscription
-        type: subscription
-        metric: contract
-        limit: -1
-        timeFrame: year
-        geo: US
-        unit: 1
-        price: contact sales
-        userMultiplied: false
-    elements:
-      - name: Sunrise EHR
-      - name: TouchWorks EHR
-      - name: Practice Fusion
-      - name: Embedded Analytics
-      - name: Premium Support
+- id: allscripts-healthcare-solutions-open
+  name: Open
+  type: freemium
+  description: >-
+    Free to build and deploy by anyone. Full access and rights to use the FHIR-enabled APIs so Veradigm
+    clients can meet regulatory requirements, full API documentation, and direct access to sandbox
+    environments. Click-through agreement, no upfront fees. Certification is NOT available on this tier and
+    the proprietary Unity API is not included.
+  entries:
+  - label: FHIR API Access
+    description: Free FHIR R4 / USCDI API access under a click-through agreement
+    name: fhir_access
+    type: flat
+    metric: month
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: '0.00'
+    userMultiplied: false
+  elements:
+  - name: FHIR R4 API access
+  - name: SMART on FHIR app launch
+  - name: Sandbox access
+  - name: Full API documentation
+- id: allscripts-healthcare-solutions-integrator-bronze
+  name: Integrator - Bronze
+  type: subscription
+  description: >-
+    Entry Integrator tier. Veradigm's own summary: "Explore the possibilities." Adds the SDK (reference
+    documentation and sandboxes), the Veradigm Connect Member logo and boilerplate language, a shared
+    mailbox, and 2 API workshop passes.
+  entries: &contact_entry
+  - label: Integrator Subscription
+    description: Paid Veradigm Connect Integrator subscription; monthly or annual with a 10% annual discount
+    name: integrator_subscription
+    type: subscription
+    metric: contract
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: SDK including reference documentation and sandboxes
+  - name: Unity API eligibility
+  - name: Veradigm Connect Member logo and boilerplate
+  - name: Shared mailbox
+  - name: 2 API workshop passes
+- id: allscripts-healthcare-solutions-integrator-silver
+  name: Integrator - Silver
+  type: subscription
+  description: '"Prototype your integration." Adds an introductory onboarding call and a third API workshop pass.'
+  entries: *contact_entry
+  elements:
+  - name: Everything in Bronze
+  - name: 3 API workshop passes
+  - name: Introductory call to get started
+- id: allscripts-healthcare-solutions-integrator-gold
+  name: Integrator - Gold
+  type: subscription
+  description: >-
+    "Innovate and connect API-enabled solutions in real-world clinical settings." Adds Veradigm
+    certification (1), recertification (1), the certified-app logo once testing requirements are met,
+    standard marketing add-ons, App Expo content promotion for 1 product, and the right to go live with
+    clients.
+  entries: *contact_entry
+  elements:
+  - name: Everything in Silver
+  - name: 4 API workshop passes
+  - name: 1 certification
+  - name: 1 recertification
+  - name: Certified app logo
+  - name: Standard marketing add-ons
+  - name: App Expo content promotion (1 product)
+  - name: Go live with clients
+- id: allscripts-healthcare-solutions-integrator-platinum
+  name: Integrator - Platinum
+  type: subscription
+  description: >-
+    "Scale and deploy your solution with dedicated account management support." Adds a second certification
+    and recertification, App Expo promotion for 2 products, success-story support, and a dedicated account
+    manager.
+  entries: *contact_entry
+  elements:
+  - name: Everything in Gold
+  - name: 5 API workshop passes
+  - name: 2 certifications
+  - name: 2 recertifications
+  - name: App Expo content promotion (2 products)
+  - name: Success story support
+  - name: Dedicated account manager
+- id: allscripts-healthcare-solutions-integrator-platinum-plus
+  name: Integrator - Platinum Plus
+  type: subscription
+  description: >-
+    Top tier - "Collaborate with us and together we can transform health, insightfully." Adds a third
+    certification and recertification, App Expo promotion for 3 products, blog post and social promotion,
+    and sales meeting / client event sponsorship.
+  entries: *contact_entry
+  elements:
+  - name: Everything in Platinum
+  - name: 3 certifications
+  - name: 3 recertifications
+  - name: App Expo content promotion (3 products)
+  - name: Blog post and social promotion
+  - name: Sales meeting and client event sponsorship
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

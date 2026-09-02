@@ -1,0 +1,77 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  https://developer.veradigm.com/Fhir/Introduction, https://developer.veradigm.com/Fhir/EndpointDirectory,
+  https://developer.veradigm.com/Fhir/ProcessOverview, https://status.veradigm.com/, plus
+  fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json.
+description: >-
+  Versioning, deprecation and operational-transparency posture of the Veradigm (formerly Allscripts
+  Healthcare Solutions) API estate. Veradigm publishes a real, dated deprecation decision for FHIR DSTU2
+  and runs a public status page, but publishes neither a general versioning policy document nor an SLA.
+versioning:
+  scheme: content-negotiation
+  detail: >-
+    The FHIR release is selected with a parameter on the Accept header ("Accept: application/fhir+json;
+    fhirVersion=4.0"), not in the URL path. Some endpoints are single-version and some are badged
+    "Versionless" and serve both DSTU2 and R4 on the same URL; the default for a versionless endpoint is
+    fixed at install time per customer and is only discoverable by reading fhirVersion out of that
+    endpoint's CapabilityStatement.
+  current: R4 (4.0.1)
+  previous: DSTU2 (1.0.2)
+  server_build:
+    name: Veradigm FHIR
+    version: 4.22.0.1
+    release_date: '2026-05-07'
+    source: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json
+  policy_url: null
+  policy_note: No general API versioning policy document is published; the above is reconstructed from the FHIR documentation.
+  docs: https://developer.veradigm.com/Fhir/Introduction
+deprecation:
+  policy_url: https://developer.veradigm.com/Fhir/Introduction
+  sunset_header: false
+  deprecation_header: false
+  announced:
+    - item: HL7 FHIR DSTU2 support
+      effective: '2025-06-01'
+      state: unsupported-but-live
+      statement: >-
+        "as of 6/1/2025, Veradigm will no longer be providing support for DSTU2 as it approaches
+        deprecation. The API is not turned off, but there is no longer be technical support or resolution
+        provided for any issues that arise. If your organization is still using DSTU2 with some clients,
+        make plans to migrate all clients to R4 in order to ensure continued support of the API."
+      migration_target: FHIR R4 (4.0.1)
+  note: >-
+    This is a real, dated deprecation notice with a named migration target - stronger than most of this
+    cohort - but Veradigm ships no RFC 8594 Sunset or Deprecation response headers, so a running client
+    gets no runtime signal. The only machine-visible marker is the separate DSTU2 table in the Endpoint
+    Directory.
+  irreversible_registration_note: >-
+    A separate one-way door the docs call out explicitly: an application's name, App Type and Purpose of
+    Use CANNOT be changed once production access is granted. Get them right before requesting production.
+status_page:
+  url: https://status.veradigm.com/
+  title: Veradigm Health Plans & Payers Status
+  verified: '2026-09-01'
+  http_status: 200
+  features: [incident history, email subscription, SMS subscription]
+  scope_caveat: >-
+    The status page is branded "Veradigm Health Plans & Payers". It is the only public Veradigm status
+    surface found, and no separate status page exists for the FHIR / EHR developer estate - so an app
+    integrating with the FHIR API has no dedicated incident feed.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No SLA or uptime commitment is published on the public developer surface. Availability terms live in
+    the Veradigm Connect subscription agreement and the customer's EHR contract.
+support:
+  developer_contact: VeradigmConnect@veradigm.com
+  altera_contact: ADP@alterahealth.com
+  altera_note: >-
+    Products divested to Harris/Altera in 2022 - Altera TouchWorks EHR, Sunrise and Paragon - are NOT
+    served by this developer program. Veradigm's own Endpoint Directory page directs those integrations to
+    Altera. This is a live corporate boundary an integrator has to get right.
+deprecated_operations: []
+deprecated_operations_note: >-
+  The CapabilityStatement marks no resource or interaction as deprecated; deprecation here operates at the
+  FHIR-release level, not the operation level.

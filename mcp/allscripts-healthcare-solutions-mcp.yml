@@ -1,0 +1,919 @@
+generated: '2026-09-01'
+method: derived
+status: candidate
+source: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json + https://developer.veradigm.com/Fhir/BulkData
+description: Veradigm (formerly Allscripts Healthcare Solutions) ships NO MCP server - no hosted endpoint, no stdio
+  package, no registry listing. Searches of the developer portal, npm and the MCP ecosystem on 2026-09-01 found
+  only third-party generic FHIR MCP servers (wso2/fhir-mcp-server, flexpa/mcp-fhir and similar), none of them Veradigm-authored
+  or Veradigm-endorsed. The tools below are a CANDIDATE surface derived from the interactions Veradigm's own live
+  CapabilityStatement declares, so an implementer has a grounded starting point. No endpoint URL is invented anywhere
+  in this file.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: searched
+  note: 'mode: none - nobody ships a server. If one were built it would inherit SMART on FHIR OAuth 2.0 per customer
+    environment, because the base URL, the authorize endpoint and the token endpoint all differ per client organization
+    (see the Veradigm Endpoint Directory). A single global MCP endpoint is not architecturally possible for this
+    API without a tenant parameter.'
+server:
+  name: veradigm-fhir (candidate, not published)
+  transport: null
+  url: null
+tool_count: 90
+tools:
+- name: get_condition
+  description: Read one Condition resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Condition.read
+  http: GET [FHIR base]/Condition/{id}
+  inputs:
+  - id
+- name: search_condition
+  description: Search Condition resources. Server declares 10 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Condition.search-type
+  http: GET [FHIR base]/Condition?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - abatement-date
+  - category
+  - clinical-status
+  - code
+  - encounter
+  - id
+  - onset-date
+  - patient
+  - recorded-date
+- name: create_condition
+  description: Create a Condition resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Condition.create
+  http: POST [FHIR base]/Condition
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_condition
+  description: Update a Condition resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Condition.update
+  http: PUT [FHIR base]/Condition/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_patient
+  description: Read one Patient resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Patient.read
+  http: GET [FHIR base]/Patient/{id}
+  inputs:
+  - id
+- name: search_patient
+  description: Search Patient resources. Server declares 9 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Patient.search-type
+  http: GET [FHIR base]/Patient?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - birthdate
+  - death-date
+  - family
+  - gender
+  - given
+  - id
+  - identifier
+  - name
+- name: get_allergy_intolerance
+  description: Read one AllergyIntolerance resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#AllergyIntolerance.read
+  http: GET [FHIR base]/AllergyIntolerance/{id}
+  inputs:
+  - id
+- name: search_allergy_intolerance
+  description: Search AllergyIntolerance resources. Server declares 4 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#AllergyIntolerance.search-type
+  http: GET [FHIR base]/AllergyIntolerance?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - clinical-status
+  - id
+  - patient
+- name: create_allergy_intolerance
+  description: Create a AllergyIntolerance resource. NOT idempotent - Veradigm documents no idempotency key and
+    declares no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#AllergyIntolerance.create
+  http: POST [FHIR base]/AllergyIntolerance
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_allergy_intolerance
+  description: Update a AllergyIntolerance resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#AllergyIntolerance.update
+  http: PUT [FHIR base]/AllergyIntolerance/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_medication_request
+  description: Read one MedicationRequest resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationRequest.read
+  http: GET [FHIR base]/MedicationRequest/{id}
+  inputs:
+  - id
+- name: search_medication_request
+  description: Search MedicationRequest resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationRequest.search-type
+  http: GET [FHIR base]/MedicationRequest?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - authoredon
+  - encounter
+  - id
+  - intent
+  - patient
+  - patient.identifier
+  - status
+- name: create_medication_request
+  description: Create a MedicationRequest resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationRequest.create
+  http: POST [FHIR base]/MedicationRequest
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_medication_request
+  description: Update a MedicationRequest resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationRequest.update
+  http: PUT [FHIR base]/MedicationRequest/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_observation
+  description: Read one Observation resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Observation.read
+  http: GET [FHIR base]/Observation/{id}
+  inputs:
+  - id
+- name: search_observation
+  description: Search Observation resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Observation.search-type
+  http: GET [FHIR base]/Observation?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - category
+  - code
+  - combo-code
+  - date
+  - id
+  - patient
+  - status
+- name: create_observation
+  description: Create a Observation resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Observation.create
+  http: POST [FHIR base]/Observation
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_observation
+  description: Update a Observation resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Observation.update
+  http: PUT [FHIR base]/Observation/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_device
+  description: Read one Device resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Device.read
+  http: GET [FHIR base]/Device/{id}
+  inputs:
+  - id
+- name: search_device
+  description: Search Device resources. Server declares 5 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Device.search-type
+  http: GET [FHIR base]/Device?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - patient
+  - status
+  - type
+- name: get_immunization
+  description: Read one Immunization resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Immunization.read
+  http: GET [FHIR base]/Immunization/{id}
+  inputs:
+  - id
+- name: search_immunization
+  description: Search Immunization resources. Server declares 5 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Immunization.search-type
+  http: GET [FHIR base]/Immunization?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - date
+  - id
+  - patient
+  - status
+- name: create_immunization
+  description: Create a Immunization resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Immunization.create
+  http: POST [FHIR base]/Immunization
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_immunization
+  description: Update a Immunization resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Immunization.update
+  http: PUT [FHIR base]/Immunization/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_care_plan
+  description: Read one CarePlan resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#CarePlan.read
+  http: GET [FHIR base]/CarePlan/{id}
+  inputs:
+  - id
+- name: search_care_plan
+  description: Search CarePlan resources. Server declares 6 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#CarePlan.search-type
+  http: GET [FHIR base]/CarePlan?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - category
+  - date
+  - id
+  - patient
+  - status
+- name: get_diagnostic_report
+  description: Read one DiagnosticReport resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#DiagnosticReport.read
+  http: GET [FHIR base]/DiagnosticReport/{id}
+  inputs:
+  - id
+- name: search_diagnostic_report
+  description: Search DiagnosticReport resources. Server declares 7 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#DiagnosticReport.search-type
+  http: GET [FHIR base]/DiagnosticReport?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - category
+  - code
+  - date
+  - id
+  - patient
+  - status
+- name: get_goal
+  description: Read one Goal resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Goal.read
+  http: GET [FHIR base]/Goal/{id}
+  inputs:
+  - id
+- name: search_goal
+  description: Search Goal resources. Server declares 7 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Goal.search-type
+  http: GET [FHIR base]/Goal?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - achievement-status
+  - description
+  - id
+  - lifecycle-status
+  - patient
+  - target-date
+- name: get_procedure
+  description: Read one Procedure resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Procedure.read
+  http: GET [FHIR base]/Procedure/{id}
+  inputs:
+  - id
+- name: search_procedure
+  description: Search Procedure resources. Server declares 6 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Procedure.search-type
+  http: GET [FHIR base]/Procedure?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - code
+  - date
+  - id
+  - patient
+  - status
+- name: get_organization
+  description: Read one Organization resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Organization.read
+  http: GET [FHIR base]/Organization/{id}
+  inputs:
+  - id
+- name: search_organization
+  description: Search Organization resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Organization.search-type
+  http: GET [FHIR base]/Organization?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - address
+  - address-city
+  - address-postalcode
+  - address-state
+  - id
+  - name
+  - partof
+- name: get_medication
+  description: Read one Medication resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Medication.read
+  http: GET [FHIR base]/Medication/{id}
+  inputs:
+  - id
+- name: search_medication
+  description: Search Medication resources. Server declares 0 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Medication.search-type
+  http: GET [FHIR base]/Medication?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+- name: get_provenance
+  description: Read one Provenance resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Provenance.read
+  http: GET [FHIR base]/Provenance/{id}
+  inputs:
+  - id
+- name: search_provenance
+  description: Search Provenance resources. Server declares 2 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Provenance.search-type
+  http: GET [FHIR base]/Provenance?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+- name: get_document_reference
+  description: Read one DocumentReference resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#DocumentReference.read
+  http: GET [FHIR base]/DocumentReference/{id}
+  inputs:
+  - id
+- name: search_document_reference
+  description: Search DocumentReference resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#DocumentReference.search-type
+  http: GET [FHIR base]/DocumentReference?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - category
+  - date
+  - id
+  - patient
+  - period
+  - status
+  - type
+- name: create_document_reference
+  description: Create a DocumentReference resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#DocumentReference.create
+  http: POST [FHIR base]/DocumentReference
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_document_reference
+  description: Update a DocumentReference resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#DocumentReference.update
+  http: PUT [FHIR base]/DocumentReference/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_location
+  description: Read one Location resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Location.read
+  http: GET [FHIR base]/Location/{id}
+  inputs:
+  - id
+- name: search_location
+  description: Search Location resources. Server declares 11 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Location.search-type
+  http: GET [FHIR base]/Location?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - address
+  - address-city
+  - address-postalcode
+  - address-state
+  - id
+  - name
+  - operationalstatus
+  - organization
+  - partof
+  - type
+- name: get_encounter
+  description: Read one Encounter resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Encounter.read
+  http: GET [FHIR base]/Encounter/{id}
+  inputs:
+  - id
+- name: search_encounter
+  description: Search Encounter resources. Server declares 10 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Encounter.search-type
+  http: GET [FHIR base]/Encounter?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - class
+  - date
+  - discharge-disposition
+  - id
+  - identifier
+  - location
+  - patient
+  - status
+  - type
+- name: get_practitioner
+  description: Read one Practitioner resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Practitioner.read
+  http: GET [FHIR base]/Practitioner/{id}
+  inputs:
+  - id
+- name: search_practitioner
+  description: Search Practitioner resources. Server declares 11 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Practitioner.search-type
+  http: GET [FHIR base]/Practitioner?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - address
+  - address-city
+  - address-postalcode
+  - address-state
+  - communication
+  - family
+  - given
+  - id
+  - identifier
+  - name
+- name: get_binary
+  description: Read one Binary resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Binary.read
+  http: GET [FHIR base]/Binary/{id}
+  inputs:
+  - id
+- name: search_binary
+  description: Search Binary resources. Server declares 2 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Binary.search-type
+  http: GET [FHIR base]/Binary?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+- name: get_related_person
+  description: Read one RelatedPerson resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#RelatedPerson.read
+  http: GET [FHIR base]/RelatedPerson/{id}
+  inputs:
+  - id
+- name: search_related_person
+  description: Search RelatedPerson resources. Server declares 4 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#RelatedPerson.search-type
+  http: GET [FHIR base]/RelatedPerson?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - name
+  - patient
+- name: get_practitioner_role
+  description: Read one PractitionerRole resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#PractitionerRole.read
+  http: GET [FHIR base]/PractitionerRole/{id}
+  inputs:
+  - id
+- name: search_practitioner_role
+  description: Search PractitionerRole resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#PractitionerRole.search-type
+  http: GET [FHIR base]/PractitionerRole?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - location
+  - practitioner
+  - practitioner.identifier
+  - practitioner.name
+  - service
+  - specialty
+- name: get_group
+  description: Read one Group resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Group.read
+  http: GET [FHIR base]/Group/{id}
+  inputs:
+  - id
+- name: search_group
+  description: Search Group resources. Server declares 6 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Group.search-type
+  http: GET [FHIR base]/Group?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - characteristic
+  - characteristic-value
+  - id
+  - member
+  - type
+- name: get_care_team
+  description: Read one CareTeam resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#CareTeam.read
+  http: GET [FHIR base]/CareTeam/{id}
+  inputs:
+  - id
+- name: search_care_team
+  description: Search CareTeam resources. Server declares 9 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#CareTeam.search-type
+  http: GET [FHIR base]/CareTeam?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - category
+  - encounter
+  - id
+  - participant
+  - patient
+  - role
+  - status
+  - subject
+- name: get_medication_statement
+  description: Read one MedicationStatement resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationStatement.read
+  http: GET [FHIR base]/MedicationStatement/{id}
+  inputs:
+  - id
+- name: search_medication_statement
+  description: Search MedicationStatement resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationStatement.search-type
+  http: GET [FHIR base]/MedicationStatement?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - category
+  - effective
+  - id
+  - patient
+  - patient.identifier
+  - source
+  - status
+- name: create_medication_statement
+  description: Create a MedicationStatement resource. NOT idempotent - Veradigm documents no idempotency key and
+    declares no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationStatement.create
+  http: POST [FHIR base]/MedicationStatement
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_medication_statement
+  description: Update a MedicationStatement resource by id. Idempotent by FHIR REST semantics, but no undo path
+    exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationStatement.update
+  http: PUT [FHIR base]/MedicationStatement/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_medication_administration
+  description: Read one MedicationAdministration resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationAdministration.read
+  http: GET [FHIR base]/MedicationAdministration/{id}
+  inputs:
+  - id
+- name: search_medication_administration
+  description: Search MedicationAdministration resources. Server declares 10 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationAdministration.search-type
+  http: GET [FHIR base]/MedicationAdministration?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - effective-time
+  - id
+  - patient
+  - patient.identifier
+  - reason-given
+  - reason-not-given
+  - request
+  - status
+  - subject
+- name: create_medication_administration
+  description: Create a MedicationAdministration resource. NOT idempotent - Veradigm documents no idempotency key
+    and declares no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationAdministration.create
+  http: POST [FHIR base]/MedicationAdministration
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_medication_administration
+  description: Update a MedicationAdministration resource by id. Idempotent by FHIR REST semantics, but no undo
+    path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationAdministration.update
+  http: PUT [FHIR base]/MedicationAdministration/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_service_request
+  description: Read one ServiceRequest resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#ServiceRequest.read
+  http: GET [FHIR base]/ServiceRequest/{id}
+  inputs:
+  - id
+- name: search_service_request
+  description: Search ServiceRequest resources. Server declares 8 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#ServiceRequest.search-type
+  http: GET [FHIR base]/ServiceRequest?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - authored
+  - category
+  - code
+  - id
+  - patient
+  - patient.identifier
+  - status
+- name: create_service_request
+  description: Create a ServiceRequest resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#ServiceRequest.create
+  http: POST [FHIR base]/ServiceRequest
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_service_request
+  description: Update a ServiceRequest resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#ServiceRequest.update
+  http: PUT [FHIR base]/ServiceRequest/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_questionnaire
+  description: Read one Questionnaire resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Questionnaire.read
+  http: GET [FHIR base]/Questionnaire/{id}
+  inputs:
+  - id
+- name: search_questionnaire
+  description: Search Questionnaire resources. Server declares 3 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Questionnaire.search-type
+  http: GET [FHIR base]/Questionnaire?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - patient.identifier
+- name: create_questionnaire
+  description: Create a Questionnaire resource. NOT idempotent - Veradigm documents no idempotency key and declares
+    no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Questionnaire.create
+  http: POST [FHIR base]/Questionnaire
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_questionnaire
+  description: Update a Questionnaire resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Questionnaire.update
+  http: PUT [FHIR base]/Questionnaire/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_questionnaire_response
+  description: Read one QuestionnaireResponse resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#QuestionnaireResponse.read
+  http: GET [FHIR base]/QuestionnaireResponse/{id}
+  inputs:
+  - id
+- name: search_questionnaire_response
+  description: Search QuestionnaireResponse resources. Server declares 7 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#QuestionnaireResponse.search-type
+  http: GET [FHIR base]/QuestionnaireResponse?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - authored
+  - id
+  - patient
+  - patient.identifier
+  - questionnaire
+  - status
+- name: create_questionnaire_response
+  description: Create a QuestionnaireResponse resource. NOT idempotent - Veradigm documents no idempotency key and
+    declares no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#QuestionnaireResponse.create
+  http: POST [FHIR base]/QuestionnaireResponse
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_questionnaire_response
+  description: Update a QuestionnaireResponse resource by id. Idempotent by FHIR REST semantics, but no undo path
+    exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#QuestionnaireResponse.update
+  http: PUT [FHIR base]/QuestionnaireResponse/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_medication_dispense
+  description: Read one MedicationDispense resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationDispense.read
+  http: GET [FHIR base]/MedicationDispense/{id}
+  inputs:
+  - id
+- name: search_medication_dispense
+  description: Search MedicationDispense resources. Server declares 5 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationDispense.search-type
+  http: GET [FHIR base]/MedicationDispense?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - patient
+  - status
+  - type
+- name: create_medication_dispense
+  description: Create a MedicationDispense resource. NOT idempotent - Veradigm documents no idempotency key and
+    declares no delete interaction on this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationDispense.create
+  http: POST [FHIR base]/MedicationDispense
+  inputs:
+  - resource
+  write: true
+  reversible: false
+- name: update_medication_dispense
+  description: Update a MedicationDispense resource by id. Idempotent by FHIR REST semantics, but no undo path exists.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#MedicationDispense.update
+  http: PUT [FHIR base]/MedicationDispense/{id}
+  inputs:
+  - id
+  - resource
+  write: true
+  reversible: false
+- name: get_specimen
+  description: Read one Specimen resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Specimen.read
+  http: GET [FHIR base]/Specimen/{id}
+  inputs:
+  - id
+- name: search_specimen
+  description: Search Specimen resources. Server declares 3 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Specimen.search-type
+  http: GET [FHIR base]/Specimen?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - patient
+- name: get_coverage
+  description: Read one Coverage resource by its FHIR logical id.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Coverage.read
+  http: GET [FHIR base]/Coverage/{id}
+  inputs:
+  - id
+- name: search_coverage
+  description: Search Coverage resources. Server declares 3 search parameter(s) for this resource.
+  source_operation: fhir/allscripts-healthcare-solutions-veradigm-fhir-r4-capabilitystatement.json#Coverage.search-type
+  http: GET [FHIR base]/Coverage?<params>
+  inputs:
+  - _count
+  - _id
+  - _lastUpdated
+  - _summary
+  - id
+  - patient
+- name: get_capability_statement
+  description: Fetch the FHIR CapabilityStatement for a client environment - the discovery entry point that also
+    carries the SMART authorize and token endpoints for that customer.
+  source_operation: https://developer.veradigm.com/Fhir/Introduction
+  http: GET [FHIR base]/metadata
+  inputs: []
+- name: start_bulk_export
+  description: Kick off a FHIR Bulk Data export for a Group. Returns 202 Accepted with a Content-Location status
+    URL. System application type only.
+  source_operation: https://developer.veradigm.com/Fhir/BulkData
+  http: GET [FHIR base]/Group/{id}/$export
+  inputs:
+  - group_id
+  - _type
+  write: true
+  reversible: true
+  reversal: DELETE [Content Location URL]
+- name: check_bulk_export_status
+  description: Poll a bulk export job. Honour Retry-After or the server returns 429.
+  source_operation: https://developer.veradigm.com/Fhir/BulkData
+  http: GET [Content Location URL]
+  inputs:
+  - status_url
+- name: cancel_bulk_export
+  description: Cancel a bulk export request created in error or no longer needed. The one published reversal path
+    in this API.
+  source_operation: https://developer.veradigm.com/Fhir/BulkData
+  http: DELETE [Content Location URL]
+  inputs:
+  - status_url
+  write: true
+caveats:
+- Every tool inherits the redaction semantics in conventions/ - a returned element marked "redacted" is not a null.
+- 'create_* tools are not retry-safe: no idempotency key is documented and no resource declares a delete interaction.'
+- Provenance supports read but NOT search - search_provenance is derived from the CapabilityStatement declaring
+  search-type, but the docs state searching Provenance is not supported. Treat that tool as unusable until the contract
+  and the docs agree.

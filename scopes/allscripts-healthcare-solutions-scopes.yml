@@ -1,0 +1,1804 @@
+generated: '2026-09-01'
+method: probed
+source: https://fhir.fhirpoint.open.allscripts.com/fhirroute/fhir/CP00101/.well-known/smart-configuration
+docs: https://developer.veradigm.com/Fhir/ProcessOverview
+description: OAuth 2.0 / SMART App Launch scopes advertised by the Veradigm (formerly Allscripts) FHIR
+  authorization server. Read verbatim from the scopes_supported array of the live SMART configuration
+  document served on the published Veradigm EHR R4 sandbox base URL, and cross-checked against the identical
+  scopes_supported array in the OpenID Connect discovery document on the issuer. Nothing here is inferred
+  - the descriptions restate the SMART App Launch v1/v2 semantics of the scope strings the server itself
+  publishes. Veradigm's Process Overview page states that a registered FHIR application may use SMART
+  v1 (.read) scopes or SMART v2 (.rs) scopes but never both; an application requesting both is not approved.
+schemes:
+- name: SMART on FHIR (OAuth 2.0 + OpenID Connect)
+  source: well-known/allscripts-healthcare-solutions-smart-configuration.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://fhir.fhirpoint.open.allscripts.com/fhirroute/authorizationV2/CP00101/connect/authorize
+    tokenUrl: https://fhir.fhirpoint.open.allscripts.com/fhirroute/authorizationV2/CP00101/connect/token
+    pkce: S256
+  - flow: clientCredentials
+    tokenUrl: https://fhir.fhirpoint.open.allscripts.com/fhirroute/authorizationV2/CP00101/connect/token
+    note: SMART Backend Services. Only FHIR applications registered with App Type "System" may use client_credentials;
+      the developer registers a JWKS URL and the server authenticates a private_key_jwt assertion against
+      it.
+  issuer: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization
+  jwks_uri: https://fhirecho.fhirpoint.open.allscripts.com/pro/authorization/.well-known/openid-configuration/jwks
+summary:
+  scope_count: 237
+  by_context:
+    openid-connect: 8
+    patient: 76
+    system: 76
+    user: 77
+  smart_versions:
+  - v1 (.read)
+  - v2 (.rs)
+  note: Veradigm does not allow SMART v1 and SMART v2 scopes on the same registered application.
+scopes:
+- scope: fhir
+  context: openid-connect
+  description: Veradigm scope granting FHIR API access.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: fhirUser
+  context: openid-connect
+  description: SMART - return the FHIR resource representing the current user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: launch
+  context: openid-connect
+  description: SMART - request the full EHR launch context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: launch/patient
+  context: openid-connect
+  description: SMART - request the patient launch context in a standalone launch.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: offline_access
+  context: openid-connect
+  description: Request a refresh token that survives the end of the session.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: online_access
+  context: openid-connect
+  description: Request a refresh token valid only while the user session is live.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: openid
+  context: openid-connect
+  description: OpenID Connect - request an ID token.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/*.read
+  context: patient
+  description: SMART v1 (.read) - read every supported resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/*.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search every supported resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/AllergyIntolerance.read
+  context: patient
+  description: SMART v1 (.read) - read the AllergyIntolerance resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/AllergyIntolerance.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the AllergyIntolerance resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Binary.read
+  context: patient
+  description: SMART v1 (.read) - read the Binary resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Binary.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Binary resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/CarePlan.read
+  context: patient
+  description: SMART v1 (.read) - read the CarePlan resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/CarePlan.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the CarePlan resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/CareTeam.read
+  context: patient
+  description: SMART v1 (.read) - read the CareTeam resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/CareTeam.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the CareTeam resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Condition.read
+  context: patient
+  description: SMART v1 (.read) - read the Condition resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Condition.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Condition resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Condition.rs?category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern
+  context: patient
+  description: SMART v2 (.rs) - read and search the Condition resource for the patient in context. Restricted
+    to category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Condition.rs?category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis
+  context: patient
+  description: SMART v2 (.rs) - read and search the Condition resource for the patient in context. Restricted
+    to category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Condition.rs?category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item
+  context: patient
+  description: SMART v2 (.rs) - read and search the Condition resource for the patient in context. Restricted
+    to category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Coverage.read
+  context: patient
+  description: SMART v1 (.read) - read the Coverage resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Coverage.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Coverage resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Device.read
+  context: patient
+  description: SMART v1 (.read) - read the Device resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Device.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Device resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/DiagnosticOrder.read
+  context: patient
+  description: SMART v1 (.read) - read the DiagnosticOrder resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/DiagnosticOrder.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the DiagnosticOrder resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/DiagnosticReport.read
+  context: patient
+  description: SMART v1 (.read) - read the DiagnosticReport resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/DiagnosticReport.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the DiagnosticReport resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/DocumentReference.read
+  context: patient
+  description: SMART v1 (.read) - read the DocumentReference resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/DocumentReference.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the DocumentReference resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Encounter.read
+  context: patient
+  description: SMART v1 (.read) - read the Encounter resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Encounter.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Encounter resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Goal.read
+  context: patient
+  description: SMART v1 (.read) - read the Goal resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Goal.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Goal resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Group.read
+  context: patient
+  description: SMART v1 (.read) - read the Group resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Group.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Group resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Immunization.read
+  context: patient
+  description: SMART v1 (.read) - read the Immunization resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Immunization.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Immunization resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Location.read
+  context: patient
+  description: SMART v1 (.read) - read the Location resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Location.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Location resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Medication.read
+  context: patient
+  description: SMART v1 (.read) - read the Medication resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Medication.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Medication resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationAdministration.read
+  context: patient
+  description: SMART v1 (.read) - read the MedicationAdministration resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationAdministration.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the MedicationAdministration resource for the patient
+    in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationDispense.read
+  context: patient
+  description: SMART v1 (.read) - read the MedicationDispense resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationDispense.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the MedicationDispense resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationOrder.read
+  context: patient
+  description: SMART v1 (.read) - read the MedicationOrder resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationOrder.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the MedicationOrder resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationRequest.read
+  context: patient
+  description: SMART v1 (.read) - read the MedicationRequest resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationRequest.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the MedicationRequest resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationStatement.read
+  context: patient
+  description: SMART v1 (.read) - read the MedicationStatement resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/MedicationStatement.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the MedicationStatement resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.read
+  context: patient
+  description: SMART v1 (.read) - read the Observation resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Observation resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh
+  context: patient
+  description: SMART v2 (.rs) - read and search the Observation resource for the patient in context. Restricted
+    to category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory
+  context: patient
+  description: SMART v2 (.rs) - read and search the Observation resource for the patient in context. Restricted
+    to category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|social-history
+  context: patient
+  description: SMART v2 (.rs) - read and search the Observation resource for the patient in context. Restricted
+    to category=http://terminology.hl7.org/CodeSystem/observation-category|social-history.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|survey
+  context: patient
+  description: SMART v2 (.rs) - read and search the Observation resource for the patient in context. Restricted
+    to category=http://terminology.hl7.org/CodeSystem/observation-category|survey.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Observation resource for the patient in context. Restricted
+    to category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Organization.read
+  context: patient
+  description: SMART v1 (.read) - read the Organization resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Organization.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Organization resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Patient.read
+  context: patient
+  description: SMART v1 (.read) - read the Patient resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Patient.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Patient resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Practitioner.read
+  context: patient
+  description: SMART v1 (.read) - read the Practitioner resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Practitioner.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Practitioner resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/PractitionerRole.read
+  context: patient
+  description: SMART v1 (.read) - read the PractitionerRole resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/PractitionerRole.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the PractitionerRole resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Procedure.read
+  context: patient
+  description: SMART v1 (.read) - read the Procedure resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Procedure.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Procedure resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Provenance.read
+  context: patient
+  description: SMART v1 (.read) - read the Provenance resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Provenance.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Provenance resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Questionnaire.read
+  context: patient
+  description: SMART v1 (.read) - read the Questionnaire resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Questionnaire.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Questionnaire resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/QuestionnaireResponse.read
+  context: patient
+  description: SMART v1 (.read) - read the QuestionnaireResponse resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/QuestionnaireResponse.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the QuestionnaireResponse resource for the patient in
+    context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/RelatedPerson.read
+  context: patient
+  description: SMART v1 (.read) - read the RelatedPerson resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/RelatedPerson.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the RelatedPerson resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/ServiceRequest.read
+  context: patient
+  description: SMART v1 (.read) - read the ServiceRequest resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/ServiceRequest.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the ServiceRequest resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Specimen.read
+  context: patient
+  description: SMART v1 (.read) - read the Specimen resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: patient/Specimen.rs
+  context: patient
+  description: SMART v2 (.rs) - read and search the Specimen resource for the patient in context.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: profile
+  context: openid-connect
+  description: OpenID Connect - request the profile claims.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/*.read
+  context: system
+  description: SMART v1 (.read) - read every supported resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/*.rs
+  context: system
+  description: SMART v2 (.rs) - read and search every supported resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/AllergyIntolerance.read
+  context: system
+  description: SMART v1 (.read) - read the AllergyIntolerance resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/AllergyIntolerance.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the AllergyIntolerance resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Binary.read
+  context: system
+  description: SMART v1 (.read) - read the Binary resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Binary.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Binary resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/CarePlan.read
+  context: system
+  description: SMART v1 (.read) - read the CarePlan resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/CarePlan.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the CarePlan resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/CareTeam.read
+  context: system
+  description: SMART v1 (.read) - read the CareTeam resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/CareTeam.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the CareTeam resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Condition.read
+  context: system
+  description: SMART v1 (.read) - read the Condition resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Condition.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Condition resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Condition.rs?category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern
+  context: system
+  description: SMART v2 (.rs) - read and search the Condition resource for a backend System application
+    (no user). Restricted to category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Condition.rs?category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis
+  context: system
+  description: SMART v2 (.rs) - read and search the Condition resource for a backend System application
+    (no user). Restricted to category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Condition.rs?category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item
+  context: system
+  description: SMART v2 (.rs) - read and search the Condition resource for a backend System application
+    (no user). Restricted to category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Coverage.read
+  context: system
+  description: SMART v1 (.read) - read the Coverage resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Coverage.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Coverage resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Device.read
+  context: system
+  description: SMART v1 (.read) - read the Device resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Device.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Device resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/DiagnosticOrder.read
+  context: system
+  description: SMART v1 (.read) - read the DiagnosticOrder resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/DiagnosticOrder.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the DiagnosticOrder resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/DiagnosticReport.read
+  context: system
+  description: SMART v1 (.read) - read the DiagnosticReport resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/DiagnosticReport.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the DiagnosticReport resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/DocumentReference.read
+  context: system
+  description: SMART v1 (.read) - read the DocumentReference resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/DocumentReference.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the DocumentReference resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Encounter.read
+  context: system
+  description: SMART v1 (.read) - read the Encounter resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Encounter.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Encounter resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Goal.read
+  context: system
+  description: SMART v1 (.read) - read the Goal resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Goal.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Goal resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Group.read
+  context: system
+  description: SMART v1 (.read) - read the Group resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Group.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Group resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Immunization.read
+  context: system
+  description: SMART v1 (.read) - read the Immunization resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Immunization.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Immunization resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Location.read
+  context: system
+  description: SMART v1 (.read) - read the Location resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Location.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Location resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Medication.read
+  context: system
+  description: SMART v1 (.read) - read the Medication resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Medication.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Medication resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationAdministration.read
+  context: system
+  description: SMART v1 (.read) - read the MedicationAdministration resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationAdministration.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the MedicationAdministration resource for a backend System
+    application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationDispense.read
+  context: system
+  description: SMART v1 (.read) - read the MedicationDispense resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationDispense.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the MedicationDispense resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationOrder.read
+  context: system
+  description: SMART v1 (.read) - read the MedicationOrder resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationOrder.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the MedicationOrder resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationRequest.read
+  context: system
+  description: SMART v1 (.read) - read the MedicationRequest resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationRequest.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the MedicationRequest resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationStatement.read
+  context: system
+  description: SMART v1 (.read) - read the MedicationStatement resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/MedicationStatement.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the MedicationStatement resource for a backend System
+    application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.read
+  context: system
+  description: SMART v1 (.read) - read the Observation resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Observation resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh
+  context: system
+  description: SMART v2 (.rs) - read and search the Observation resource for a backend System application
+    (no user). Restricted to category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory
+  context: system
+  description: SMART v2 (.rs) - read and search the Observation resource for a backend System application
+    (no user). Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|social-history
+  context: system
+  description: SMART v2 (.rs) - read and search the Observation resource for a backend System application
+    (no user). Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|social-history.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|survey
+  context: system
+  description: SMART v2 (.rs) - read and search the Observation resource for a backend System application
+    (no user). Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|survey.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs
+  context: system
+  description: SMART v2 (.rs) - read and search the Observation resource for a backend System application
+    (no user). Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Organization.read
+  context: system
+  description: SMART v1 (.read) - read the Organization resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Organization.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Organization resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Patient.read
+  context: system
+  description: SMART v1 (.read) - read the Patient resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Patient.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Patient resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Practitioner.read
+  context: system
+  description: SMART v1 (.read) - read the Practitioner resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Practitioner.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Practitioner resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/PractitionerRole.read
+  context: system
+  description: SMART v1 (.read) - read the PractitionerRole resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/PractitionerRole.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the PractitionerRole resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Procedure.read
+  context: system
+  description: SMART v1 (.read) - read the Procedure resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Procedure.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Procedure resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Provenance.read
+  context: system
+  description: SMART v1 (.read) - read the Provenance resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Provenance.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Provenance resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Questionnaire.read
+  context: system
+  description: SMART v1 (.read) - read the Questionnaire resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Questionnaire.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Questionnaire resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/QuestionnaireResponse.read
+  context: system
+  description: SMART v1 (.read) - read the QuestionnaireResponse resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/QuestionnaireResponse.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the QuestionnaireResponse resource for a backend System
+    application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/RelatedPerson.read
+  context: system
+  description: SMART v1 (.read) - read the RelatedPerson resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/RelatedPerson.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the RelatedPerson resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/ServiceRequest.read
+  context: system
+  description: SMART v1 (.read) - read the ServiceRequest resource for a backend System application (no
+    user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/ServiceRequest.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the ServiceRequest resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Specimen.read
+  context: system
+  description: SMART v1 (.read) - read the Specimen resource for a backend System application (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: system/Specimen.rs
+  context: system
+  description: SMART v2 (.rs) - read and search the Specimen resource for a backend System application
+    (no user).
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/*.*
+  context: user
+  description: SMART - all advertised operations on every supported resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/*.read
+  context: user
+  description: SMART v1 (.read) - read every supported resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/*.rs
+  context: user
+  description: SMART v2 (.rs) - read and search every supported resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/AllergyIntolerance.read
+  context: user
+  description: SMART v1 (.read) - read the AllergyIntolerance resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/AllergyIntolerance.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the AllergyIntolerance resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Binary.read
+  context: user
+  description: SMART v1 (.read) - read the Binary resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Binary.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Binary resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/CarePlan.read
+  context: user
+  description: SMART v1 (.read) - read the CarePlan resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/CarePlan.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the CarePlan resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/CareTeam.read
+  context: user
+  description: SMART v1 (.read) - read the CareTeam resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/CareTeam.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the CareTeam resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Condition.read
+  context: user
+  description: SMART v1 (.read) - read the Condition resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Condition.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Condition resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Condition.rs?category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern
+  context: user
+  description: SMART v2 (.rs) - read and search the Condition resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Condition.rs?category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis
+  context: user
+  description: SMART v2 (.rs) - read and search the Condition resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Condition.rs?category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item
+  context: user
+  description: SMART v2 (.rs) - read and search the Condition resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Coverage.read
+  context: user
+  description: SMART v1 (.read) - read the Coverage resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Coverage.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Coverage resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Device.read
+  context: user
+  description: SMART v1 (.read) - read the Device resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Device.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Device resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/DiagnosticOrder.read
+  context: user
+  description: SMART v1 (.read) - read the DiagnosticOrder resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/DiagnosticOrder.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the DiagnosticOrder resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/DiagnosticReport.read
+  context: user
+  description: SMART v1 (.read) - read the DiagnosticReport resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/DiagnosticReport.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the DiagnosticReport resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/DocumentReference.read
+  context: user
+  description: SMART v1 (.read) - read the DocumentReference resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/DocumentReference.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the DocumentReference resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Encounter.read
+  context: user
+  description: SMART v1 (.read) - read the Encounter resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Encounter.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Encounter resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Goal.read
+  context: user
+  description: SMART v1 (.read) - read the Goal resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Goal.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Goal resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Group.read
+  context: user
+  description: SMART v1 (.read) - read the Group resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Group.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Group resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Immunization.read
+  context: user
+  description: SMART v1 (.read) - read the Immunization resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Immunization.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Immunization resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Location.read
+  context: user
+  description: SMART v1 (.read) - read the Location resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Location.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Location resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Medication.read
+  context: user
+  description: SMART v1 (.read) - read the Medication resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Medication.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Medication resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationAdministration.read
+  context: user
+  description: SMART v1 (.read) - read the MedicationAdministration resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationAdministration.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the MedicationAdministration resource for the signed-in
+    Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationDispense.read
+  context: user
+  description: SMART v1 (.read) - read the MedicationDispense resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationDispense.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the MedicationDispense resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationOrder.read
+  context: user
+  description: SMART v1 (.read) - read the MedicationOrder resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationOrder.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the MedicationOrder resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationRequest.read
+  context: user
+  description: SMART v1 (.read) - read the MedicationRequest resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationRequest.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the MedicationRequest resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationStatement.read
+  context: user
+  description: SMART v1 (.read) - read the MedicationStatement resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/MedicationStatement.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the MedicationStatement resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.read
+  context: user
+  description: SMART v1 (.read) - read the Observation resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Observation resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh
+  context: user
+  description: SMART v2 (.rs) - read and search the Observation resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory
+  context: user
+  description: SMART v2 (.rs) - read and search the Observation resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|social-history
+  context: user
+  description: SMART v2 (.rs) - read and search the Observation resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|social-history.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|survey
+  context: user
+  description: SMART v2 (.rs) - read and search the Observation resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|survey.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Observation.rs?category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs
+  context: user
+  description: SMART v2 (.rs) - read and search the Observation resource for the signed-in Veradigm EHR
+    user. Restricted to category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Organization.read
+  context: user
+  description: SMART v1 (.read) - read the Organization resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Organization.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Organization resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Patient.read
+  context: user
+  description: SMART v1 (.read) - read the Patient resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Patient.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Patient resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Practitioner.read
+  context: user
+  description: SMART v1 (.read) - read the Practitioner resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Practitioner.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Practitioner resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/PractitionerRole.read
+  context: user
+  description: SMART v1 (.read) - read the PractitionerRole resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/PractitionerRole.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the PractitionerRole resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Procedure.read
+  context: user
+  description: SMART v1 (.read) - read the Procedure resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Procedure.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Procedure resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Provenance.read
+  context: user
+  description: SMART v1 (.read) - read the Provenance resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Provenance.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Provenance resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Questionnaire.read
+  context: user
+  description: SMART v1 (.read) - read the Questionnaire resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Questionnaire.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Questionnaire resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/QuestionnaireResponse.read
+  context: user
+  description: SMART v1 (.read) - read the QuestionnaireResponse resource for the signed-in Veradigm EHR
+    user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/QuestionnaireResponse.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the QuestionnaireResponse resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/RelatedPerson.read
+  context: user
+  description: SMART v1 (.read) - read the RelatedPerson resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/RelatedPerson.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the RelatedPerson resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/ServiceRequest.read
+  context: user
+  description: SMART v1 (.read) - read the ServiceRequest resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/ServiceRequest.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the ServiceRequest resource for the signed-in Veradigm
+    EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Specimen.read
+  context: user
+  description: SMART v1 (.read) - read the Specimen resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
+- scope: user/Specimen.rs
+  context: user
+  description: SMART v2 (.rs) - read and search the Specimen resource for the signed-in Veradigm EHR user.
+  flows:
+  - authorizationCode
+  sources:
+  - well-known/allscripts-healthcare-solutions-smart-configuration.json
