@@ -23,6 +23,7 @@ accessModel:
   confidence: medium
   source:
   - plans
+  - {url: 'https://www.allscripts.com', status: 301, note: 'declared website redirects to https://veradigm.com:443/?modal=allscripts — a different registrable domain (allscripts.com -> veradigm.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
   generated: '2026-07-22'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/allscripts-healthcare-solutions.png
@@ -178,8 +179,9 @@ common:
   url: data-model/allscripts-healthcare-solutions-data-model.yml
 - type: Packages
   url: packages/allscripts-healthcare-solutions-packages.yml
-- type: MCPServer
+- type: X-MCPServerCandidate
   url: mcp/allscripts-healthcare-solutions-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
 - type: AgentSkill
   url: skills/_index.yml
 - type: LLMsTxt

@@ -1,0 +1,52 @@
+# Kin Score artifact — allscripts-healthcare-solutions — 2026-09-04T062714
+# The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
+---
+kin_score:
+  slug: allscripts-healthcare-solutions
+  schema_version: 0.18.2
+  scored_at: '2026-09-04'
+  run_ts: 2026-09-04T062714
+  composite: 60.6
+  band: strong
+  facets:
+    discoverability: 59.3
+    contract_quality: 34.4
+    governance: 18.2
+    operational_transparency: 57.9
+    developer_ergonomics: 58.9
+    commercial_clarity: 84.2
+    contract_governance: 18.2
+    access_clarity: 84.2
+  agent_readiness:
+    score: 30.0
+    band: agent-ready
+    dimensions:
+      spec_presence: true
+      agentic_access: false
+      reversibility_documented: false
+      mcp_server: false
+      auth_clarity: served
+      idempotency: false
+      error_semantics: documented
+      openapi_examples: false
+      rate_limit_signal: documented
+      event_surface_described: false
+      agent_skills: derived
+      well_known_catalog: false
+      consent_identity: false
+      agent_card: false
+      dry_run_mode: false
+      delegated_identity: served
+      protected_resource_metadata: false
+      dynamic_client_registration: false
+      agentic_commerce: false
+  regulatory:
+    applies: true
+    regime: Health
+    regime_id: health
+    score: 70.0
+    matched_via: tags
+  provenance:
+    mcp: derived
+    skills: derived
+    conformance: first-party
